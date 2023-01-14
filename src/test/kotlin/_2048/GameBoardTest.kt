@@ -1,5 +1,6 @@
 package _2048
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -23,18 +24,6 @@ class GameBoardTest {
         //given
 
     }
-
-    @Test
-    fun whenShiftWrongChar_ThenReturnNull() {
-        //given
-        val board: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) }
-
-        // when
-        val boardRes: Array<IntArray>? = gameBoard.shift('4')
-
-        assertNull(boardRes)
-    }
-
     @Test
     fun whenShiftUpAndNoConcatenation_ThenShiftBoardUp() {
         //given
@@ -46,7 +35,7 @@ class GameBoardTest {
         gameBoard = GameBoard(board)
 
         // when
-        val boardRes: Array<IntArray>? = gameBoard.shift(UP)
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.UP)
 
         //then
         assertContentEquals(intArrayOf(0,0,2,0), boardRes?.get(0))   //0
@@ -66,7 +55,7 @@ class GameBoardTest {
         gameBoard = GameBoard(board)
 
         // when
-        val boardRes: Array<IntArray>? = gameBoard.shift(UP)
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.UP)
 
         //then
         assertContentEquals(intArrayOf(0,0,4,0), boardRes?.get(0))   //0
@@ -86,8 +75,8 @@ class GameBoardTest {
         gameBoard = GameBoard(board)
 
         // when
-        val boardRes: Array<IntArray>? = gameBoard.shift(UP)
-
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.UP)
+gameBoard.printBoard()
         //then
         assertContentEquals(intArrayOf(0,0,4,0), boardRes?.get(0))   //0
         assertContentEquals(intArrayOf(0,0,4,0), boardRes?.get(1))   //1
@@ -106,7 +95,7 @@ class GameBoardTest {
         gameBoard = GameBoard(board)
 
         // when
-        val boardRes: Array<IntArray>? = gameBoard.shift(UP)
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.UP)
 
         //then
         /*  2,0,4,0
@@ -131,7 +120,7 @@ class GameBoardTest {
         gameBoard = GameBoard(board)
 
         // when
-        val boardRes: Array<IntArray>? = gameBoard.shift(UP)
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.UP)
 
         //then
         /*  2,4,4,4
@@ -146,4 +135,29 @@ class GameBoardTest {
 
     }
 
+    @Test
+    @Disabled
+    fun whenShiftDown_ThenMoveAndCompactDown() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            intArrayOf(0,0,4,2), //0
+            intArrayOf(2,2,2,2), //1
+            intArrayOf(0,2,2,0), //2
+            intArrayOf(0,0,2,2)) //3
+        gameBoard = GameBoard(board)
+
+        //when
+        val boardRes: Array<IntArray>? = gameBoard.shift(Direction.DOWN)
+
+        //then
+        /*  0,0,0,0
+            0,0,4,0
+            0,0,2,2
+            2,4,4,4 */
+        gameBoard.printBoard()
+        assertContentEquals(intArrayOf(0,0,0,0), boardRes?.get(0))   //0
+        assertContentEquals(intArrayOf(0,0,4,0), boardRes?.get(1))   //1
+        assertContentEquals(intArrayOf(0,0,2,2), boardRes?.get(2))   //2
+        assertContentEquals(intArrayOf(2,4,4,4), boardRes?.get(3))   //3
+    }
 }

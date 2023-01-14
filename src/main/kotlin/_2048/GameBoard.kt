@@ -25,13 +25,12 @@ class GameBoard {
         printBoard()
     }
 
-    fun shift(direction: Char): Array<IntArray>? {
+    fun shift(direction: Direction): Array<IntArray>? {
         return when (direction) {
-            'w' -> shiftUp();
-            's' -> shiftDown();
-            'a' -> shiftLeft();
-            'd' -> shiftRight();
-            else -> null;
+            Direction.UP -> shiftUp()
+            Direction.DOWN -> shiftDown()
+            Direction.LEFT -> shiftLeft()
+            Direction.RIGHT -> shiftRight()
         }
     }
 
@@ -44,27 +43,32 @@ class GameBoard {
     }
 
     private fun shiftDown(): Array<IntArray> {
-        TODO("Not yet implemented")
-    }
-
-    private fun shiftUp(): Array<IntArray> {
-        mergeTiles()
-        compactTiles()
+        mergeTilesDown()
+        compactTilesDown()
         return boardGame
     }
 
-    private fun compactTiles() {
-        for (row in BOX_HEIGHT-1 downTo 1) {
-            for (column in BOX_WIDTH-1 downTo 0) {
-                if (0 != boardGame[row][column] &&
-                    0 == boardGame[row-1][column]) {
-                    boardGame[row-1][column] = boardGame[row][column]
-                    boardGame[row][column] = 0
+    private fun mergeTilesDown() {
+        for (row in (BOX_WIDTH-1 downTo 0)) {
+            for (column in (BOX_HEIGHT downTo 0)) {
+                if (boardGame[row][column] != 0 &&
+                    boardGame[row][column] == boardGame[row - 1][column]
+                ) {
+                    boardGame[row][column] *= 2
+                    boardGame[row -1][column] = 0
+
                 }
             }
         }
     }
-    private fun mergeTiles() {
+
+    private fun shiftUp(): Array<IntArray> {
+        mergeTilesUp()
+        compactTilesUp()
+        return boardGame
+    }
+
+    private fun mergeTilesUp() {
         for (row in (0 until BOX_WIDTH - 1)) {
             for (column in (0 until BOX_HEIGHT)) {
                 if (boardGame[row][column] != 0 &&
@@ -73,6 +77,41 @@ class GameBoard {
                     boardGame[row][column] *= 2
                     boardGame[row + 1][column] = 0
 
+                }
+            }
+        }
+    }
+    private fun compactTilesDown() {
+        for (row in 1 until BOX_HEIGHT) {
+            for (column in 0 until BOX_WIDTH) {
+                if (0 != boardGame[row][column] &&
+                    0 == boardGame[row + 1][column]
+                ) {
+                    boardGame[row + 1][column] = boardGame[row][column]
+                    boardGame[row][column] = 0
+                }
+            }
+        }
+    }
+
+    private fun compactTilesUp() {
+        for (row in BOX_HEIGHT - 1 downTo 1) {
+            for (column in BOX_WIDTH - 1 downTo 0) {
+                if (0 != boardGame[row][column] &&
+                    0 == boardGame[row - 1][column]
+                ) {
+                    boardGame[row - 1][column] = boardGame[row][column]
+                    boardGame[row][column] = 0
+                }
+
+                if (0 != boardGame[row][column] &&
+                    0 != boardGame[row-1][column]) {
+                    for (row2 in (row-1 downTo   1)) {
+                        if (0 == boardGame[row2-1][column]) {
+                            boardGame[row2-1][column] = boardGame[row2][column]
+                            boardGame[row][column] = 0
+                        }
+                    }
                 }
             }
         }
@@ -92,7 +131,7 @@ class GameBoard {
     }
 
     private fun initBoard() {
-        boardGame[(0..3).random()][(0..3).random()] = 2
+        boardGame[(0..3).random()][(0..3).random()] = if (Random.nextBoolean()) 2 else 4
         if (Random.nextBoolean()) {
             val heightIndex: Int = (0..3).random()
             val widthIndex: Int = (0..3).random()
