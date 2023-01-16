@@ -25,7 +25,7 @@ class GameBoard {
         printBoard()
     }
 
-    fun shift(direction: Direction): Array<IntArray>? {
+    fun shift(direction: Direction): Array<IntArray> {
         return when (direction) {
             Direction.UP -> shiftUp()
             Direction.DOWN -> shiftDown()
@@ -48,68 +48,83 @@ class GameBoard {
         return boardGame
     }
 
-    private fun mergeTilesDown() {
-        for (row in (BOX_WIDTH-1 downTo 0)) {
-            for (column in (BOX_HEIGHT downTo 0)) {
-                if (boardGame[row][column] != 0 &&
-                    boardGame[row][column] == boardGame[row - 1][column]
-                ) {
-                    boardGame[row][column] *= 2
-                    boardGame[row -1][column] = 0
+    private fun compactTilesDown() {
+        for (row in BOX_HEIGHT-1 downTo  0) {
+            for (column in BOX_WIDTH-1 downTo  0) {
+                if (0 == boardGame[row][column]) {
+                    for (row2 in row - 1 downTo  0) {
+                        if (0 != boardGame[row2][column]) {
+                            boardGame[row][column] = boardGame[row2][column]
+                            boardGame[row2][column] = 0
 
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun mergeTilesDown() {
+        for (row in (BOX_WIDTH - 1 downTo 0)) {
+            for (column in (BOX_HEIGHT - 1 downTo 0)) {
+                if (boardGame[row][column] != 0) {
+                    for (row2 in (row - 1 downTo 0)) {
+                        if (boardGame[row2][column] == boardGame[row][column]) {
+                            boardGame[row][column] = boardGame[row][column] shl 1
+                            boardGame[row2][column] = 0
+                        } else if (boardGame[row2][column] != 0 &&
+                            boardGame[row2][column] != boardGame[row][column]
+                        ) {
+                            break
+                        }
+                    }
                 }
             }
         }
     }
 
     private fun shiftUp(): Array<IntArray> {
+        compactTilesUp()
         mergeTilesUp()
         compactTilesUp()
         return boardGame
     }
 
     private fun mergeTilesUp() {
+        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
         for (row in (0 until BOX_WIDTH - 1)) {
             for (column in (0 until BOX_HEIGHT)) {
-                if (boardGame[row][column] != 0 &&
-                    boardGame[row][column] == boardGame[row + 1][column]
-                ) {
-                    boardGame[row][column] *= 2
-                    boardGame[row + 1][column] = 0
+                if (boardGame[row][column] != 0) {
+                    for (row2 in (row + 1 until BOX_HEIGHT)) {
+                        if (boardGame[row2][column] == boardGame[row][column] &&
+                            hasCollided[column] == false
+                        ) {
+                            boardGame[row][column] = boardGame[row][column] shl 1
+                            boardGame[row2][column] = 0
+                            hasCollided[column] = true
+                        } else if (boardGame[row2][column] != 0 &&
+                            boardGame[row2][column] != boardGame[row][column]
+                        ) {
+                            break
+                        }
+                    }
+                }
 
-                }
-            }
-        }
-    }
-    private fun compactTilesDown() {
-        for (row in 1 until BOX_HEIGHT) {
-            for (column in 0 until BOX_WIDTH) {
-                if (0 != boardGame[row][column] &&
-                    0 == boardGame[row + 1][column]
-                ) {
-                    boardGame[row + 1][column] = boardGame[row][column]
-                    boardGame[row][column] = 0
-                }
             }
         }
     }
 
     private fun compactTilesUp() {
-        for (row in BOX_HEIGHT - 1 downTo 1) {
-            for (column in BOX_WIDTH - 1 downTo 0) {
-                if (0 != boardGame[row][column] &&
-                    0 == boardGame[row - 1][column]
-                ) {
-                    boardGame[row - 1][column] = boardGame[row][column]
-                    boardGame[row][column] = 0
-                }
+        for (row in 0 until BOX_HEIGHT) {
+            for (column in 0 until BOX_WIDTH) {
+                if (0 == boardGame[row][column]) {
+                    for (row2 in row + 1 until BOX_WIDTH) {
+                        if (0 != boardGame[row2][column]) {
+                            boardGame[row][column] = boardGame[row2][column]
+                            boardGame[row2][column] = 0
 
-                if (0 != boardGame[row][column] &&
-                    0 != boardGame[row-1][column]) {
-                    for (row2 in (row-1 downTo   1)) {
-                        if (0 == boardGame[row2-1][column]) {
-                            boardGame[row2-1][column] = boardGame[row2][column]
-                            boardGame[row][column] = 0
+                            break
                         }
                     }
                 }
