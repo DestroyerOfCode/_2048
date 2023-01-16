@@ -35,11 +35,107 @@ class GameBoard {
     }
 
     private fun shiftRight(): Array<IntArray> {
-        TODO("Not yet implemented")
+        compactTilesRight()
+        mergeTilesRight()
+        compactTilesRight()
+        return boardGame
+    }
+
+    private fun mergeTilesRight() {
+        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
+        for (row in boardGame.indices.reversed()) {
+            for (column in boardGame[0].indices.reversed()) {
+                if (boardGame[row][column] != 0) {
+                    for (column2 in (column - 1 downTo  0)) {
+                        if (boardGame[row][column2] == boardGame[row][column] &&
+                            hasCollided[column] == false
+                        ) {
+                            boardGame[row][column] = boardGame[row][column] shl 1
+                            boardGame[row][column2] = 0
+                            hasCollided[column] = true
+                        } else if (boardGame[row][column2] != 0 &&
+                            boardGame[row][column2] != boardGame[row][column]
+                        ) {
+                            break
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
+    private fun compactTilesRight() {
+        for (row in boardGame.indices.reversed()) {
+            for (column in boardGame[0].indices.reversed()) {
+                if (0 == boardGame[row][column]) {
+                    for (column2 in column - 1 downTo  0) {
+                        if (0 != boardGame[row][column2]) {
+                            boardGame[row][column] = boardGame[row][column2]
+                            boardGame[row][column2] = 0
+
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     private fun shiftLeft(): Array<IntArray> {
-        TODO("Not yet implemented")
+        compactTilesLeft()
+        mergeTilesLeft()
+        compactTilesLeft()
+        return boardGame
+    }
+
+    private fun mergeTilesLeft() {
+        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
+        for (row in boardGame.indices) {
+            for (column in boardGame[0].indices) {
+                if (boardGame[row][column] != 0) {
+                    for (column2 in (column + 1 until BOX_HEIGHT)) {
+                        if (boardGame[row][column2] == boardGame[row][column] &&
+                            hasCollided[column] == false
+                        ) {
+                            boardGame[row][column] = boardGame[row][column] shl 1
+                            boardGame[row][column2] = 0
+                            hasCollided[column] = true
+                        } else if (boardGame[row][column2] != 0 &&
+                            boardGame[row][column2] != boardGame[row][column]
+                        ) {
+                            break
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
+    private fun compactTilesLeft() {
+        for (row in boardGame.indices) {
+            for (column in boardGame[0].indices) {
+                if (0 == boardGame[row][column]) {
+                    for (column2 in column + 1 until BOX_HEIGHT) {
+                        if (0 != boardGame[row][column2]) {
+                            boardGame[row][column] = boardGame[row][column2]
+                            boardGame[row][column2] = 0
+
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     private fun shiftDown(): Array<IntArray> {
@@ -53,7 +149,7 @@ class GameBoard {
         for (row in boardGame.indices.reversed()) {
             for (column in boardGame[0].indices.reversed()) {
                 if (0 == boardGame[row][column]) {
-                    for (row2 in row - 1 downTo  0) {
+                    for (row2 in row - 1 downTo 0) {
                         if (0 != boardGame[row2][column]) {
                             boardGame[row][column] = boardGame[row2][column]
                             boardGame[row2][column] = 0
@@ -67,13 +163,17 @@ class GameBoard {
     }
 
     private fun mergeTilesDown() {
+        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
         for (row in boardGame.indices.reversed()) {
             for (column in boardGame[0].indices.reversed()) {
                 if (boardGame[row][column] != 0) {
                     for (row2 in (row - 1 downTo 0)) {
-                        if (boardGame[row2][column] == boardGame[row][column]) {
+                        if (boardGame[row2][column] == boardGame[row][column] &&
+                            hasCollided[column] == false
+                        ) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row2][column] = 0
+                            hasCollided[column] = true
                         } else if (boardGame[row2][column] != 0 &&
                             boardGame[row2][column] != boardGame[row][column]
                         ) {
