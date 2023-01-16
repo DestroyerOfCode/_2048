@@ -43,14 +43,15 @@ class GameBoard {
     }
 
     private fun shiftDown(): Array<IntArray> {
+        compactTilesDown()
         mergeTilesDown()
         compactTilesDown()
         return boardGame
     }
 
     private fun compactTilesDown() {
-        for (row in BOX_HEIGHT-1 downTo  0) {
-            for (column in BOX_WIDTH-1 downTo  0) {
+        for (row in boardGame.indices.reversed()) {
+            for (column in boardGame[0].indices.reversed()) {
                 if (0 == boardGame[row][column]) {
                     for (row2 in row - 1 downTo  0) {
                         if (0 != boardGame[row2][column]) {
@@ -66,8 +67,8 @@ class GameBoard {
     }
 
     private fun mergeTilesDown() {
-        for (row in (BOX_WIDTH - 1 downTo 0)) {
-            for (column in (BOX_HEIGHT - 1 downTo 0)) {
+        for (row in boardGame.indices.reversed()) {
+            for (column in boardGame[0].indices.reversed()) {
                 if (boardGame[row][column] != 0) {
                     for (row2 in (row - 1 downTo 0)) {
                         if (boardGame[row2][column] == boardGame[row][column]) {
@@ -93,8 +94,8 @@ class GameBoard {
 
     private fun mergeTilesUp() {
         val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
-        for (row in (0 until BOX_WIDTH - 1)) {
-            for (column in (0 until BOX_HEIGHT)) {
+        for (row in boardGame.indices) {
+            for (column in boardGame[0].indices) {
                 if (boardGame[row][column] != 0) {
                     for (row2 in (row + 1 until BOX_HEIGHT)) {
                         if (boardGame[row2][column] == boardGame[row][column] &&
@@ -116,8 +117,8 @@ class GameBoard {
     }
 
     private fun compactTilesUp() {
-        for (row in 0 until BOX_HEIGHT) {
-            for (column in 0 until BOX_WIDTH) {
+        for (row in boardGame.indices) {
+            for (column in boardGame[0].indices) {
                 if (0 == boardGame[row][column]) {
                     for (row2 in row + 1 until BOX_WIDTH) {
                         if (0 != boardGame[row2][column]) {
@@ -133,8 +134,8 @@ class GameBoard {
     }
 
     fun printBoard() {
-        for (x in 0 until BOX_HEIGHT) {
-            for (y in 0 until BOX_WIDTH) {
+        for (x in boardGame.indices) {
+            for (y in boardGame[0].indices) {
                 if (y != BOX_WIDTH - 1) {
                     print("${boardGame[x][y]} ")
                 } else {
