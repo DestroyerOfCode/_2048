@@ -21,22 +21,7 @@ class GameBoard {
 
     fun start() {
         initBoard()
-        printBoard()
     }
-
-    private fun printBoard() {
-        for (x in playingArea.indices) {
-            for (y in playingArea[0].indices) {
-                if (y != playingArea[0].lastIndex) {
-                    print("${playingArea[x][y]} ")
-                } else {
-                    print(playingArea[x][y])
-                }
-            }
-            println()
-        }
-    }
-
     private fun initBoard() {
         playingArea[(0..3).random()][(0..3).random()] = if (Random.nextBoolean()) 2 else 4
         if (Random.nextBoolean()) {
