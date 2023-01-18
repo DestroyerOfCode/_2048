@@ -46,13 +46,13 @@ class GameBoard {
         for (row in boardGame.indices.reversed()) {
             for (column in boardGame[0].indices.reversed()) {
                 if (boardGame[row][column] != 0) {
-                    for (column2 in (column - 1 downTo  0)) {
+                    for (column2 in (column - 1 downTo 0)) {
                         if (boardGame[row][column2] == boardGame[row][column] &&
-                            hasCollided[column] == false
+                            hasCollided[row] == false
                         ) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row][column2] = 0
-                            hasCollided[column] = true
+                            hasCollided[row] = true
                         } else if (boardGame[row][column2] != 0 &&
                             boardGame[row][column2] != boardGame[row][column]
                         ) {
@@ -71,7 +71,7 @@ class GameBoard {
         for (row in boardGame.indices.reversed()) {
             for (column in boardGame[0].indices.reversed()) {
                 if (0 == boardGame[row][column]) {
-                    for (column2 in column - 1 downTo  0) {
+                    for (column2 in column - 1 downTo 0) {
                         if (0 != boardGame[row][column2]) {
                             boardGame[row][column] = boardGame[row][column2]
                             boardGame[row][column2] = 0
@@ -100,11 +100,11 @@ class GameBoard {
                 if (boardGame[row][column] != 0) {
                     for (column2 in (column + 1 until BOX_HEIGHT)) {
                         if (boardGame[row][column2] == boardGame[row][column] &&
-                            hasCollided[column] == false
+                            hasCollided[row] == false
                         ) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row][column2] = 0
-                            hasCollided[column] = true
+                            hasCollided[row] = true
                         } else if (boardGame[row][column2] != 0 &&
                             boardGame[row][column2] != boardGame[row][column]
                         ) {
