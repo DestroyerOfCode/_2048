@@ -42,17 +42,14 @@ class GameBoard {
     }
 
     private fun mergeTilesRight() {
-        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
         for (row in boardGame.indices.reversed()) {
-            for (column in boardGame[0].indices.reversed()) {
+            columnLoop@ for (column in boardGame[0].indices.reversed()) {
                 if (boardGame[row][column] != 0) {
                     for (column2 in (column - 1 downTo 0)) {
-                        if (boardGame[row][column2] == boardGame[row][column] &&
-                            hasCollided[row] == false
-                        ) {
+                        if (boardGame[row][column2] == boardGame[row][column]) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row][column2] = 0
-                            hasCollided[row] = true
+                            continue@columnLoop
                         } else if (boardGame[row][column2] != 0 &&
                             boardGame[row][column2] != boardGame[row][column]
                         ) {
@@ -94,17 +91,14 @@ class GameBoard {
     }
 
     private fun mergeTilesLeft() {
-        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
         for (row in boardGame.indices) {
-            for (column in boardGame[0].indices) {
+            columnLoop@ for (column in boardGame[0].indices) {
                 if (boardGame[row][column] != 0) {
                     for (column2 in (column + 1 until BOX_HEIGHT)) {
-                        if (boardGame[row][column2] == boardGame[row][column] &&
-                            hasCollided[row] == false
-                        ) {
+                        if (boardGame[row][column2] == boardGame[row][column]) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row][column2] = 0
-                            hasCollided[row] = true
+                            continue@columnLoop
                         } else if (boardGame[row][column2] != 0 &&
                             boardGame[row][column2] != boardGame[row][column]
                         ) {
@@ -163,17 +157,14 @@ class GameBoard {
     }
 
     private fun mergeTilesDown() {
-        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
         for (row in boardGame.indices.reversed()) {
-            for (column in boardGame[0].indices.reversed()) {
+            columnLoop@ for (column in boardGame[0].indices.reversed()) {
                 if (boardGame[row][column] != 0) {
                     for (row2 in (row - 1 downTo 0)) {
-                        if (boardGame[row2][column] == boardGame[row][column] &&
-                            hasCollided[column] == false
-                        ) {
+                        if (boardGame[row2][column] == boardGame[row][column]) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row2][column] = 0
-                            hasCollided[column] = true
+                            continue@columnLoop
                         } else if (boardGame[row2][column] != 0 &&
                             boardGame[row2][column] != boardGame[row][column]
                         ) {
@@ -193,17 +184,15 @@ class GameBoard {
     }
 
     private fun mergeTilesUp() {
-        val hasCollided: MutableMap<Int, Boolean> = mutableMapOf(0 to false, 1 to false, 2 to false, 3 to false)
+
         for (row in boardGame.indices) {
-            for (column in boardGame[0].indices) {
+            columnLoop@ for (column in boardGame[0].indices) {
                 if (boardGame[row][column] != 0) {
                     for (row2 in (row + 1 until BOX_HEIGHT)) {
-                        if (boardGame[row2][column] == boardGame[row][column] &&
-                            hasCollided[column] == false
-                        ) {
+                        if (boardGame[row2][column] == boardGame[row][column]) {
                             boardGame[row][column] = boardGame[row][column] shl 1
                             boardGame[row2][column] = 0
-                            hasCollided[column] = true
+                            continue@columnLoop
                         } else if (boardGame[row2][column] != 0 &&
                             boardGame[row2][column] != boardGame[row][column]
                         ) {
@@ -236,7 +225,7 @@ class GameBoard {
     fun printBoard() {
         for (x in boardGame.indices) {
             for (y in boardGame[0].indices) {
-                if (y != BOX_WIDTH - 1) {
+                if (y != boardGame[0].lastIndex) {
                     print("${boardGame[x][y]} ")
                 } else {
                     print(boardGame[x][y])

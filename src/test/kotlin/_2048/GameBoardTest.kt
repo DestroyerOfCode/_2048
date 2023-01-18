@@ -399,5 +399,55 @@ class GameBoardTest {
         assertContentEquals(intArrayOf(0, 0, 2, 4), boardRes[2])   //2
         assertContentEquals(intArrayOf(0, 2, 4, 2), boardRes[3])   //3
     }
+    @Test
+    fun whenShiftRight_ThenMoveAndCompactRight2() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 2, 2, 2),
+            /*1*/ intArrayOf(4, 4, 4, 4),
+            /*2*/ intArrayOf(2, 0, 2, 2),
+            /*3*/ intArrayOf(2, 4, 0, 2)
+        )
+        gameBoard = GameBoard(board)
+
+        //when
+        val boardRes: Array<IntArray> = gameBoard.shift(Direction.RIGHT)
+
+        //then
+        /*  0, 0, 4, 4
+            0, 0, 8, 8
+            0, 0, 2, 4
+            0, 2, 4, 2 */
+        gameBoard.printBoard()
+        assertContentEquals(intArrayOf(0, 0, 4, 4), boardRes[0])   //0
+        assertContentEquals(intArrayOf(0, 0, 8, 8), boardRes[1])   //1
+        assertContentEquals(intArrayOf(0, 0, 2, 4), boardRes[2])   //2
+        assertContentEquals(intArrayOf(0, 2, 4, 2), boardRes[3])   //3
+    }
+    @Test
+    fun whenShiftRightWithBiggerBoard_ThenMoveAndCompactRight() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 4, 2, 2, 2),
+            /*1*/ intArrayOf(4, 2, 2, 4, 4),
+            /*2*/ intArrayOf(2, 0, 2, 2, 8),
+            /*3*/ intArrayOf(2, 4, 0, 2, 0)
+        )
+        gameBoard = GameBoard(board)
+
+        //when
+        val boardRes: Array<IntArray> = gameBoard.shift(Direction.RIGHT)
+
+        //then
+        /*  0, 2, 4, 2, 4
+            0, 0, 4, 4, 8
+            0, 0, 2, 4, 8
+            0, 0, 2, 4, 2 */
+        gameBoard.printBoard()
+        assertContentEquals(intArrayOf(0, 2, 4, 2, 4), boardRes[0])   //0
+        assertContentEquals(intArrayOf(0, 0, 4, 4, 8), boardRes[1])   //1
+        assertContentEquals(intArrayOf(0, 0, 2, 4, 8), boardRes[2])   //2
+        assertContentEquals(intArrayOf(0, 0, 2, 4, 2), boardRes[3])   //3
+    }
 
 }
