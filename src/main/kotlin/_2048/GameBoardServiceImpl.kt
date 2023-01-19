@@ -1,6 +1,6 @@
 package _2048
 
-class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
+class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService {
 
     override fun shift(direction: Direction): Array<IntArray> {
         return when (direction) {
@@ -12,12 +12,12 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
     }
 
     override fun printBoard() {
-        for (x in gameBoard.playingArea.indices) {
-            for (y in gameBoard.playingArea[0].indices) {
-                if (y != gameBoard.playingArea[0].lastIndex) {
-                    print("${gameBoard.playingArea[x][y]} ")
+        gameBoard.playingArea.forEach { row ->
+            row.forEachIndexed { indexColumn, tile ->
+                if (indexColumn != gameBoard.playingArea[0].lastIndex) {
+                    print("$tile ")
                 } else {
-                    print(gameBoard.playingArea[x][y])
+                    print(tile)
                 }
             }
             println()
@@ -75,17 +75,15 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
     }
 
     private fun mergeTilesLeft() {
-        for (row in gameBoard.playingArea.indices) {
-            columnLoop@ for (column in gameBoard.playingArea[0].indices) {
-                if (gameBoard.playingArea[row][column] != 0) {
-                    for (column2 in (column + 1 until GameBoard.BOX_HEIGHT)) {
-                        if (gameBoard.playingArea[row][column2] == gameBoard.playingArea[row][column]) {
-                            gameBoard.playingArea[row][column] = gameBoard.playingArea[row][column] shl 1
-                            gameBoard.playingArea[row][column2] = 0
-                            continue@columnLoop
-                        } else if (gameBoard.playingArea[row][column2] != 0 &&
-                            gameBoard.playingArea[row][column2] != gameBoard.playingArea[row][column]
-                        ) {
+        gameBoard.playingArea.forEachIndexed { indexRow, row ->
+            row.forEachIndexed { indexColumn, tile ->
+                if (0 != tile) {
+                    for (column2 in (indexColumn + 1 until gameBoard.playingArea.lastIndex + 1)) {
+                        if (gameBoard.playingArea[indexRow][column2] == tile) {
+                            gameBoard.playingArea[indexRow][indexColumn] = tile shl 1
+                            gameBoard.playingArea[indexRow][column2] = 0
+                            return@forEachIndexed
+                        } else if (areTilesNonZeroAndDifferent(gameBoard.playingArea[indexRow][column2], tile)) {
                             break
                         }
                     }
@@ -94,21 +92,24 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
         }
     }
 
+
     private fun compactTilesLeft() {
-        for (row in gameBoard.playingArea.indices) {
-            for (column in gameBoard.playingArea[0].indices) {
-                if (0 == gameBoard.playingArea[row][column]) {
-                    for (column2 in column + 1 until GameBoard.BOX_HEIGHT) {
-                        if (0 != gameBoard.playingArea[row][column2]) {
-                            gameBoard.playingArea[row][column] = gameBoard.playingArea[row][column2]
-                            gameBoard.playingArea[row][column2] = 0
-                            break
-                        }
+        gameBoard.playingArea.forEachIndexed { indexRow, row ->
+            row.forEachIndexed { indexColumn, tile ->
+                if (0 != tile) {
+                    return@forEachIndexed
+                }
+                for (column2 in indexColumn + 1 until gameBoard.playingArea.lastIndex + 1) {
+                    if (0 != gameBoard.playingArea[indexRow][column2]) {
+                        gameBoard.playingArea[indexRow][indexColumn] = gameBoard.playingArea[indexRow][column2]
+                        gameBoard.playingArea[indexRow][column2] = 0
+                        break
                     }
                 }
             }
         }
     }
+
 
     override fun shiftDown(): Array<IntArray> {
         compactTilesDown()
@@ -161,19 +162,18 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
     }
 
     private fun mergeTilesUp() {
-        for (row in gameBoard.playingArea.indices) {
-            columnLoop@ for (column in gameBoard.playingArea[0].indices) {
-                if (0 != gameBoard.playingArea[row][column]) {
-                    for (row2 in (row + 1 until GameBoard.BOX_HEIGHT)) {
-                        if (gameBoard.playingArea[row2][column] == gameBoard.playingArea[row][column]) {
-                            gameBoard.playingArea[row][column] = gameBoard.playingArea[row][column] shl 1
-                            gameBoard.playingArea[row2][column] = 0
-                            continue@columnLoop
-                        } else if (gameBoard.playingArea[row2][column] != 0 &&
-                            gameBoard.playingArea[row2][column] != gameBoard.playingArea[row][column]
-                        ) {
-                            break
-                        }
+        gameBoard.playingArea.forEachIndexed { indexRow, row ->
+            row.forEachIndexed { indexColumn, tile ->
+                if (0 == tile) {
+                    return@forEachIndexed
+                }
+                for (row2 in (indexRow + 1 until gameBoard.playingArea.lastIndex + 1)) {
+                    if (gameBoard.playingArea[row2][indexColumn] == tile) {
+                        gameBoard.playingArea[indexRow][indexColumn] = tile shl 1
+                        gameBoard.playingArea[row2][indexColumn] = 0
+                        return@forEachIndexed
+                    } else if (areTilesNonZeroAndDifferent(gameBoard.playingArea[row2][indexColumn], tile)) {
+                        break
                     }
                 }
 
@@ -182,18 +182,24 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard): GameBoardService {
     }
 
     private fun compactTilesUp() {
-        for (row in gameBoard.playingArea.indices) {
-            for (column in gameBoard.playingArea[0].indices) {
-                if (0 == gameBoard.playingArea[row][column]) {
-                    for (row2 in row + 1 until GameBoard.BOX_WIDTH) {
-                        if (0 != gameBoard.playingArea[row2][column]) {
-                            gameBoard.playingArea[row][column] = gameBoard.playingArea[row2][column]
-                            gameBoard.playingArea[row2][column] = 0
-                            break
-                        }
+        gameBoard.playingArea.forEachIndexed { indexRow, row ->
+            row.forEachIndexed { indexColumn, tile ->
+                if (0 != tile) {
+                    return@forEachIndexed
+                }
+                for (row2 in indexRow + 1 until row.lastIndex + 1) {
+                    if (0 != gameBoard.playingArea[row2][indexColumn]) {
+                        gameBoard.playingArea[indexRow][indexColumn] = gameBoard.playingArea[row2][indexColumn]
+                        gameBoard.playingArea[row2][indexColumn] = 0
+                        break
                     }
                 }
             }
         }
     }
+
+    private fun areTilesNonZeroAndDifferent(tile1: Int, tile2: Int): Boolean {
+        return 0 != tile1 && tile1 != tile2
+    }
+
 }
