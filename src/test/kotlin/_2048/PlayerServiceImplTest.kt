@@ -28,8 +28,12 @@ class PlayerServiceImplTest {
         playerService = PlayerServiceImpl(
             GameBoard(
                 arrayOf(
-                    intArrayOf(2, 0, 2, 2, 2), intArrayOf(0, 0, 2, 2, 0), intArrayOf(2, 2, 2),
-                    intArrayOf(2, 0, 2, 2), intArrayOf(0, 0, 0, 0), intArrayOf(0)
+                    intArrayOf(2, 0, 2, 2, 2),
+                    intArrayOf(0, 0, 2, 2, 0),
+                    intArrayOf(2, 2, 2),
+                    intArrayOf(2, 0, 2, 2),
+                    intArrayOf(0, 0, 0, 0),
+                    intArrayOf(0)
                 )
             )
         )
@@ -49,8 +53,11 @@ class PlayerServiceImplTest {
         playerService = PlayerServiceImpl(
             GameBoard(
                 arrayOf(
-                    intArrayOf(2, 2, 2, 2, 2), intArrayOf(2, 2, 2),
-                    intArrayOf(2, 2, 2, 2), intArrayOf(2, 2, 2), intArrayOf(2)
+                    intArrayOf(2, 2, 2, 2, 2),
+                    intArrayOf(2, 2, 2),
+                    intArrayOf(2, 2, 2, 2),
+                    intArrayOf(2, 2, 2),
+                    intArrayOf(2)
                 )
             )
         )
@@ -69,8 +76,7 @@ class PlayerServiceImplTest {
         return {
             boardRes.playingArea.forEach { row ->
                 row.forEach {
-                    if (it in intArrayOf(2, 4))
-                        ++numberOfNonZeroTiles
+                    if (it in intArrayOf(2, 4)) ++numberOfNonZeroTiles
                 }
             }
             numberOfNonZeroTiles == wantedNumberOfNonZeroTiles
