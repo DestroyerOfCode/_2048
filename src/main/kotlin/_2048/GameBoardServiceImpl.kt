@@ -76,16 +76,16 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService 
 
     private fun mergeTilesLeft() {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->
-            row.forEachIndexed { indexColumn, tile ->
+            row.forEachIndexed columnLoop@{ indexColumn, tile ->
                 if (0 == tile) {
-                    return@forEachIndexed
+                    return@columnLoop
                 }
                 for (column2 in (indexColumn + 1 until gameBoard.playingArea.lastIndex + 1)) {
                     if (row[column2] == tile) {
                         row[indexColumn] = tile shl 1
                         row[column2] = 0
                         gameBoard.playingArea[indexRow] = row
-                        return@forEachIndexed
+                        return@columnLoop
                     } else if (areTilesNonZeroAndDifferent(gameBoard.playingArea[indexRow][column2], tile)) {
                         break
                     }
@@ -98,9 +98,9 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService 
 
     private fun compactTilesLeft() {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->
-            row.forEachIndexed { indexColumn, tile ->
+            row.forEachIndexed columnLoop@{ indexColumn, tile ->
                 if (0 != tile) {
-                    return@forEachIndexed
+                    return@columnLoop
                 }
                 for (column2 in indexColumn + 1 until gameBoard.playingArea.lastIndex + 1) {
                     if (0 != row[column2]) {
@@ -167,15 +167,15 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService 
 
     private fun mergeTilesUp() {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->
-            row.forEachIndexed { indexColumn, tile ->
+            row.forEachIndexed columnLoop@{ indexColumn, tile ->
                 if (0 == tile) {
-                    return@forEachIndexed
+                    return@columnLoop
                 }
                 for (row2 in (indexRow + 1 until gameBoard.playingArea.lastIndex + 1)) {
                     if (gameBoard.playingArea[row2][indexColumn] == tile) {
                         gameBoard.playingArea[indexRow][indexColumn] = tile shl 1
                         gameBoard.playingArea[row2][indexColumn] = 0
-                        return@forEachIndexed
+                        return@columnLoop
                     } else if (areTilesNonZeroAndDifferent(gameBoard.playingArea[row2][indexColumn], tile)) {
                         break
                     }
@@ -187,9 +187,9 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService 
 
     private fun compactTilesUp() {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->
-            row.forEachIndexed { indexColumn, tile ->
+            row.forEachIndexed columnLoop@{ indexColumn, tile ->
                 if (0 != tile) {
-                    return@forEachIndexed
+                    return@columnLoop
                 }
                 for (row2 in indexRow + 1 until row.lastIndex + 1) {
                     if (0 != gameBoard.playingArea[row2][indexColumn]) {

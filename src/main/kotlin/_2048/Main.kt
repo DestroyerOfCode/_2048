@@ -1,6 +1,6 @@
 package _2048
 
-fun main(args: Array<String>) {
+fun main() {
     val gameBoard = GameBoard();
     gameBoard.start();
 }
