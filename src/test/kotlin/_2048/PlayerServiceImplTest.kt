@@ -3,19 +3,16 @@ package _2048
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 
 class PlayerServiceImplTest {
 
     private lateinit var playerService: PlayerService
 
-    private var gameBoardService: GameBoardService = Mockito.mock(GameBoardService::class.java)
-
     @Test
     fun whenAddNewTileToEmptyBoard_ThenGameBoardSizeIncrementsToOne() {
         //given
-        val wantedNumberOfNonZeroTiles = 1
-        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
+        val wantedNumberOfNonZeroTiles = intArrayOf(2, 3)
+        playerService = PlayerServiceImpl(GameBoard())
 
         //when
         val boardRes: GameBoard = playerService.addNewTile()
@@ -27,7 +24,7 @@ class PlayerServiceImplTest {
     @Test
     fun whenAddNewTileToFilledPlayingArea_ThenGameBoardSizeIncrementsByOne() {
         //given
-        val wantedNumberOfNonZeroTiles = 13
+        val wantedNumberOfNonZeroTiles = intArrayOf(13)
         playerService = PlayerServiceImpl(
             GameBoard(
                 arrayOf(
@@ -38,8 +35,7 @@ class PlayerServiceImplTest {
                     intArrayOf(0, 0, 0, 0),
                     intArrayOf(0)
                 )
-            ),
-            gameBoardService
+            )
         )
 
         //when
@@ -51,9 +47,22 @@ class PlayerServiceImplTest {
     }
 
     @Test
+    fun whenMakeMoveWithValidCharacter_ThenCallShift() {
+        //given
+        val playerMove = "W"
+        playerService = PlayerServiceImpl(GameBoard())
+
+        //when
+        val direction: Direction? = playerService.makeMove(playerMove)
+
+        //then
+        Assertions.assertEquals(Direction.UP, direction)
+    }
+
+    @Test
     fun whenAddNewTileToFullPlayingArea_ThenGameBoardSizeRemainsSame() {
         //given
-        val wantedNumberOfNonZeroTiles = 16
+        val wantedNumberOfNonZeroTiles = intArrayOf(16)
         playerService = PlayerServiceImpl(
             GameBoard(
                 arrayOf(
@@ -63,8 +72,7 @@ class PlayerServiceImplTest {
                     intArrayOf(2, 2, 2),
                     intArrayOf(2)
                 )
-            ),
-            gameBoardService
+            )
         )
 
         //when
@@ -77,24 +85,10 @@ class PlayerServiceImplTest {
     }
 
     @Test
-    fun whenMakeMoveWithValidCharacter_ThenCallShift() {
-        //given
-        val playerMove = "W"
-        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
-        Mockito.doReturn(arrayOf(intArrayOf())).`when`(gameBoardService).shift(Direction.UP)
-
-        //when
-        playerService.makeMove(playerMove)
-
-        //then
-        Mockito.verify(gameBoardService, Mockito.times(1)).shift(Direction.UP)
-    }
-
-    @Test
     fun whenMakeMoveWithInvalidCharacter_ThenThrowIllegalMoveException() {
         //given
         val playerMove = "b"
-        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
+        playerService = PlayerServiceImpl(GameBoard())
 
         //when
         val illegalMoveException: IllegalMoveException =
@@ -107,7 +101,7 @@ class PlayerServiceImplTest {
         )
     }
 
-    private fun countNonEmptyTiles(boardRes: GameBoard, wantedNumberOfNonZeroTiles: Int): () -> Boolean {
+    private fun countNonEmptyTiles(boardRes: GameBoard, wantedNumberOfNonZeroTiles: IntArray): () -> Boolean {
         var numberOfNonZeroTiles = 0
         return {
             boardRes.playingArea.forEach { row ->
@@ -115,7 +109,7 @@ class PlayerServiceImplTest {
                     if (it in intArrayOf(2, 4)) ++numberOfNonZeroTiles
                 }
             }
-            numberOfNonZeroTiles == wantedNumberOfNonZeroTiles
+            wantedNumberOfNonZeroTiles.contains(numberOfNonZeroTiles)
         }
     }
 }

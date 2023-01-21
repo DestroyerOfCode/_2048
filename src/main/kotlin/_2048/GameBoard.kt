@@ -9,8 +9,22 @@ class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(
         const val BOX_WIDTH = 4
     }
 
-    fun start() {
-        initBoard()
+    init {
+        if (isPlayingAreaEmpty()) {
+            initBoard()
+        }
+    }
+
+    private fun isPlayingAreaEmpty(): Boolean {
+        var isEmpty = true
+        playingArea.forEach { row ->
+            row.forEach { tile ->
+                if (tile != 0) {
+                    isEmpty = false
+                }
+            }
+        }
+        return isEmpty
     }
 
     private fun initBoard() {

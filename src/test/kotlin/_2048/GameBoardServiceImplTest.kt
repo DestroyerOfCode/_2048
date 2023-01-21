@@ -1,11 +1,13 @@
 package _2048
 
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
 import kotlin.test.assertContentEquals
 
 class GameBoardServiceImplTest {
 
     private lateinit var gameBoardService: GameBoardServiceImpl
+    private var playerService: PlayerService = Mockito.mock(PlayerService::class.java)
 
     @Test
     fun whenShiftUpAndNoConcatenation_ThenShiftBoardUp() {
@@ -16,7 +18,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 0, 0, 0),
             intArrayOf(0, 0, 2, 0)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         // when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -38,7 +40,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 0, 2, 0),
             intArrayOf(0, 0, 2, 0)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         // when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -60,7 +62,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 0, 2, 0),
             intArrayOf(0, 0, 2, 0)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         // when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -82,7 +84,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 0, 2, 0), //2
             intArrayOf(2, 0, 2, 0)
         ) //3
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         // when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -108,7 +110,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 2, 2, 0), //2
             intArrayOf(2, 0, 2, 2)
         ) //3
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         // when
 
@@ -134,7 +136,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 2, 2, 2), //2
             intArrayOf(0, 0, 4, 2)
         ) //3
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -159,7 +161,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(4, 2, 4, 2),
             /*3*/ intArrayOf(0, 32, 8, 2)
         ) //3
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -184,7 +186,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(4, 2, 0, 4),
             /*3*/ intArrayOf(2, 4, 2, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
@@ -209,7 +211,7 @@ class GameBoardServiceImplTest {
             intArrayOf(0, 2, 2, 0), //2
             intArrayOf(0, 0, 2, 2)  //3
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.DOWN)
@@ -234,7 +236,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(4, 2, 4, 2),
             /*3*/ intArrayOf(0, 32, 8, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.DOWN)
@@ -259,7 +261,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(8, 32, 4, 64),
             /*3*/ intArrayOf(8, 0, 2, 128)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.DOWN)
@@ -284,7 +286,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(2, 4, 4, 8),
             /*3*/ intArrayOf(128, 64, 2, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.LEFT)
@@ -309,7 +311,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(2, 2, 0, 2),
             /*3*/ intArrayOf(2, 0, 4, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.LEFT)
@@ -334,7 +336,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(8, 4, 4, 2),
             /*3*/ intArrayOf(2, 2, 64, 128)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.RIGHT)
@@ -359,7 +361,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(2, 0, 2, 2),
             /*3*/ intArrayOf(2, 4, 0, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.RIGHT)
@@ -384,7 +386,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(2, 0, 2, 2),
             /*3*/ intArrayOf(2, 4, 0, 2)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.RIGHT)
@@ -409,7 +411,7 @@ class GameBoardServiceImplTest {
             /*2*/ intArrayOf(2, 0, 2, 2, 8),
             /*3*/ intArrayOf(2, 4, 0, 2, 0)
         )
-        gameBoardService = GameBoardServiceImpl(GameBoard(board))
+        gameBoardService = GameBoardServiceImpl(GameBoard(board), playerService)
 
         //when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.RIGHT)

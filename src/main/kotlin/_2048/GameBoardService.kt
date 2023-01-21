@@ -8,4 +8,5 @@ interface GameBoardService {
     fun shiftRight(): Array<IntArray>
     fun shiftLeft(): Array<IntArray>
     fun printBoard()
+    fun start()
 }

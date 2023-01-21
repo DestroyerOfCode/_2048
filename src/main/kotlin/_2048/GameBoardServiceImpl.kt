@@ -1,6 +1,7 @@
 package _2048
 
-class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService {
+class GameBoardServiceImpl(private val gameBoard: GameBoard = GameBoard(),
+    private val playerService: PlayerService) : GameBoardService {
 
     override fun shift(direction: Direction): Array<IntArray> {
         return when (direction) {
@@ -22,6 +23,24 @@ class GameBoardServiceImpl(private var gameBoard: GameBoard) : GameBoardService 
             }
             println()
         }
+    }
+
+    override fun start() {
+        while (canMakeMove()) {
+            val directionString: String = readln()
+            var direction: Direction?
+            try {
+                direction = playerService.makeMove(directionString)
+                shift(direction!!)
+                playerService.addNewTile()
+            } catch (ex: IllegalMoveException) {
+
+            }
+        }
+    }
+
+    private fun canMakeMove(): Boolean {
+        TODO("Not yet implemented")
     }
 
     override fun shiftRight(): Array<IntArray> {

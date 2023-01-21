@@ -3,8 +3,7 @@ package _2048
 import kotlin.random.Random
 
 class PlayerServiceImpl(
-    private var gameBoard: GameBoard,
-    private var gameBoardService: GameBoardService
+    private val gameBoard: GameBoard,
 ) : PlayerService {
 
     companion object {
@@ -21,10 +20,10 @@ class PlayerServiceImpl(
         return gameBoard
     }
 
-    override fun makeMove(move: String) {
+    override fun makeMove(move: String): Direction? {
         isMoveValid(move)
 
-        Direction.values().find { it.keyboardButton == move.lowercase() }?.let { gameBoardService.shift(it) }
+        return Direction.values().find { it.keyboardButton == move.lowercase() }
     }
 
     private fun isMoveValid(move: String) {
