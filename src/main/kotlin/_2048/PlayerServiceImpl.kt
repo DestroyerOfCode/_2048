@@ -2,7 +2,10 @@ package _2048
 
 import kotlin.random.Random
 
-class PlayerServiceImpl(private var gameBoard: GameBoard) : PlayerService {
+class PlayerServiceImpl(
+    private var gameBoard: GameBoard,
+    private var gameBoardService: GameBoardService
+) : PlayerService {
 
     override fun addNewTile(): GameBoard {
 
@@ -13,6 +16,16 @@ class PlayerServiceImpl(private var gameBoard: GameBoard) : PlayerService {
         addTileToRandomFreeSpot(freeTiles)
 
         return gameBoard
+    }
+
+    override fun makeMove() {
+
+        val move: String = readln()
+        if (move !in ("w, W, s, S, a, A, d, D")) {
+            throw IllegalMoveException()
+        }
+
+        gameBoardService.shift(Direction.valueOf(move))
     }
 
     private fun findFreeTiles(freeTiles: MutableMap<Int, MutableList<Int>>) {

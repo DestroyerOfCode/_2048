@@ -2,17 +2,19 @@ package _2048
 
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-
+import org.mockito.Mock
+import org.mockito.Mockito
 
 class PlayerServiceImplTest {
 
     private lateinit var playerService: PlayerService
 
+    private var gameBoardService: GameBoardService = Mockito.mock(GameBoardService::class.java)
     @Test
     fun whenAddNewTileToEmptyBoard_ThenGameBoardSizeIncrementsToOne() {
         //given
         val wantedNumberOfNonZeroTiles = 1
-        playerService = PlayerServiceImpl(GameBoard())
+        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
 
         //when
         val boardRes: GameBoard = playerService.addNewTile()
@@ -35,7 +37,8 @@ class PlayerServiceImplTest {
                     intArrayOf(0, 0, 0, 0),
                     intArrayOf(0)
                 )
-            )
+            ),
+            gameBoardService
         )
 
         //when
@@ -59,7 +62,8 @@ class PlayerServiceImplTest {
                     intArrayOf(2, 2, 2),
                     intArrayOf(2)
                 )
-            )
+            ),
+            gameBoardService
         )
 
         //when
