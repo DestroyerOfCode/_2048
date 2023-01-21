@@ -17,10 +17,11 @@ class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(
 
     private fun isPlayingAreaEmpty(): Boolean {
         var isEmpty = true
-        playingArea.forEach { row ->
+        playingArea.forEach rowCycle@{ row ->
             row.forEach { tile ->
                 if (tile != 0) {
                     isEmpty = false
+                    return@rowCycle
                 }
             }
         }
@@ -28,14 +29,16 @@ class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(
     }
 
     private fun initBoard() {
-        val firstTileHeightIndex = playingArea.lastIndex
-        playingArea[(0..firstTileHeightIndex).random()][(0..playingArea[firstTileHeightIndex].lastIndex).random()] =
-            if (Random.nextBoolean()) 2 else 4
+        initTileAtRandomPosition()
         if (Random.nextBoolean()) {
-            val secondTileHeightIndex: Int = (0..playingArea.lastIndex).random()
-            val widthIndex: Int = (0..playingArea[secondTileHeightIndex].lastIndex).random()
-            playingArea[secondTileHeightIndex][widthIndex] = if (Random.nextBoolean()) 2 else 4
+            initTileAtRandomPosition()
         }
+    }
+
+    private fun initTileAtRandomPosition() {
+        val rowIndex = (0..playingArea.lastIndex).random()
+        val columnIndex = (0..playingArea[rowIndex].lastIndex).random()
+        playingArea[(0..rowIndex).random()][columnIndex] = if (Random.nextBoolean()) 2 else 4
     }
 
 }
