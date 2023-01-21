@@ -22,12 +22,13 @@ class GameBoard {
     fun start() {
         initBoard()
     }
+
     private fun initBoard() {
         playingArea[(0..3).random()][(0..3).random()] = if (Random.nextBoolean()) 2 else 4
         if (Random.nextBoolean()) {
             val heightIndex: Int = (0..3).random()
             val widthIndex: Int = (0..3).random()
-            playingArea[heightIndex][widthIndex] = if (Random.nextBoolean()) 2 else 4;
+            playingArea[heightIndex][widthIndex] = if (Random.nextBoolean()) 2 else 4
         }
     }
 
