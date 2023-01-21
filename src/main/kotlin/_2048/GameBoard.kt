@@ -3,20 +3,10 @@ package _2048
 import kotlin.random.Random
 
 
-class GameBoard {
+class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) }) {
     companion object {
         const val BOX_HEIGHT = 4
         const val BOX_WIDTH = 4
-    }
-
-    val playingArea: Array<IntArray>
-
-    constructor(playingArea: Array<IntArray>) {
-        this.playingArea = playingArea
-    }
-
-    constructor() {
-        playingArea = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) }
     }
 
     fun start() {
@@ -24,11 +14,13 @@ class GameBoard {
     }
 
     private fun initBoard() {
-        playingArea[(0..3).random()][(0..3).random()] = if (Random.nextBoolean()) 2 else 4
+        val firstTileHeightIndex = playingArea.lastIndex
+        playingArea[(0..firstTileHeightIndex).random()][(0..playingArea[firstTileHeightIndex].lastIndex).random()] =
+            if (Random.nextBoolean()) 2 else 4
         if (Random.nextBoolean()) {
-            val heightIndex: Int = (0..3).random()
-            val widthIndex: Int = (0..3).random()
-            playingArea[heightIndex][widthIndex] = if (Random.nextBoolean()) 2 else 4
+            val secondTileHeightIndex: Int = (0..playingArea.lastIndex).random()
+            val widthIndex: Int = (0..playingArea[secondTileHeightIndex].lastIndex).random()
+            playingArea[secondTileHeightIndex][widthIndex] = if (Random.nextBoolean()) 2 else 4
         }
     }
 

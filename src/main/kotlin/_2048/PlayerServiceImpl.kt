@@ -35,8 +35,8 @@ class PlayerServiceImpl(
 
 
     private fun findFreeTiles(freeTiles: MutableMap<Int, MutableList<Int>>) {
-        gameBoard.playingArea.forEachIndexed columnLoop@{ indexRow, row ->
-            row.forEachIndexed { indexColumn, tile ->
+        gameBoard.playingArea.forEachIndexed { indexRow, row ->
+            row.forEachIndexed columnLoop@{ indexColumn, tile ->
                 if (0 != tile) {
                     return@columnLoop
                 }
