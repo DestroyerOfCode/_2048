@@ -1,8 +1,8 @@
 package _2048
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.mockito.Mock
 import org.mockito.Mockito
 
 class PlayerServiceImplTest {
@@ -10,6 +10,7 @@ class PlayerServiceImplTest {
     private lateinit var playerService: PlayerService
 
     private var gameBoardService: GameBoardService = Mockito.mock(GameBoardService::class.java)
+
     @Test
     fun whenAddNewTileToEmptyBoard_ThenGameBoardSizeIncrementsToOne() {
         //given
@@ -73,6 +74,37 @@ class PlayerServiceImplTest {
         assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 10")
 
 
+    }
+
+    @Test
+    fun whenMakeMoveWithValidCharacter_ThenCallShift() {
+        //given
+        val playerMove = "W"
+        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
+        Mockito.doReturn(arrayOf(intArrayOf())).`when`(gameBoardService).shift(Direction.UP)
+
+        //when
+        playerService.makeMove(playerMove)
+
+        //then
+        Mockito.verify(gameBoardService, Mockito.times(1)).shift(Direction.UP)
+    }
+
+    @Test
+    fun whenMakeMoveWithInvalidCharacter_ThenThrowIllegalMoveException() {
+        //given
+        val playerMove = "b"
+        playerService = PlayerServiceImpl(GameBoard(), gameBoardService)
+
+        //when
+        val illegalMoveException: IllegalMoveException =
+            Assertions.assertThrows(IllegalMoveException::class.java) { playerService.makeMove(playerMove) }
+
+        //then
+        Assertions.assertEquals(
+            "Invalid move $playerMove. Please use one of 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'",
+            illegalMoveException.message
+        )
     }
 
     private fun countNonEmptyTiles(boardRes: GameBoard, wantedNumberOfNonZeroTiles: Int): () -> Boolean {

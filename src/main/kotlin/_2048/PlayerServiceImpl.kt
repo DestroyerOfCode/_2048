@@ -7,8 +7,11 @@ class PlayerServiceImpl(
     private var gameBoardService: GameBoardService
 ) : PlayerService {
 
-    override fun addNewTile(): GameBoard {
+    companion object {
+        val validMoves = listOf("w", "s", "a", "d", "W", "S", "A", "D")
+    }
 
+    override fun addNewTile(): GameBoard {
         val freeTiles: MutableMap<Int, MutableList<Int>> = HashMap()
 
         findFreeTiles(freeTiles)
@@ -18,15 +21,18 @@ class PlayerServiceImpl(
         return gameBoard
     }
 
-    override fun makeMove() {
+    override fun makeMove(move: String) {
+        isMoveValid(move)
 
-        val move: String = readln()
-        if (move !in ("w, W, s, S, a, A, d, D")) {
-            throw IllegalMoveException()
-        }
-
-        gameBoardService.shift(Direction.valueOf(move))
+        Direction.values().find { it.keyboardButton == move.lowercase() }?.let { gameBoardService.shift(it) }
     }
+
+    private fun isMoveValid(move: String) {
+        if (!validMoves.contains(move)) {
+            throw IllegalMoveException("Invalid move $move. Please use one of ${validMoves.joinToString { "'$it'" }}")
+        }
+    }
+
 
     private fun findFreeTiles(freeTiles: MutableMap<Int, MutableList<Int>>) {
         gameBoard.playingArea.forEachIndexed columnLoop@{ indexRow, row ->

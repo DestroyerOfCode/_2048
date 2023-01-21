@@ -2,5 +2,5 @@ package _2048
 
 interface PlayerService {
     fun addNewTile(): GameBoard
-    fun makeMove()
+    fun makeMove(move: String)
 }

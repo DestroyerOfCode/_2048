@@ -1,5 +1,5 @@
 package _2048
 
-class IllegalMoveException : RuntimeException() {
+class IllegalMoveException(override val message:String) : RuntimeException() {
 
 }
