@@ -64,7 +64,7 @@ class GameBoardServiceImplTest {
 
         // when
         val playingAreaRes: Array<IntArray> = gameBoardService.shift(Direction.UP)
-
+        
         //then
         assertContentEquals(intArrayOf(0, 0, 4, 0), playingAreaRes[0])   //0
         assertContentEquals(intArrayOf(0, 0, 4, 0), playingAreaRes[1])   //1
@@ -374,7 +374,6 @@ class GameBoardServiceImplTest {
         assertContentEquals(intArrayOf(0, 0, 2, 4), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(0, 2, 4, 2), playingAreaRes[3])   //3
     }
-
     @Test
     fun whenShiftRight_ThenMoveAndCompactRight2() {
         //given
@@ -399,7 +398,6 @@ class GameBoardServiceImplTest {
         assertContentEquals(intArrayOf(0, 0, 2, 4), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(0, 2, 4, 2), playingAreaRes[3])   //3
     }
-
     @Test
     fun whenShiftRightWithBiggerBoard_ThenMoveAndCompactRight() {
         //given
@@ -419,7 +417,7 @@ class GameBoardServiceImplTest {
             0, 0, 4, 4, 8
             0, 0, 2, 4, 8
             0, 0, 2, 4, 2 */
-
+        
         assertContentEquals(intArrayOf(0, 2, 4, 2, 4), playingAreaRes[0])   //0
         assertContentEquals(intArrayOf(0, 0, 4, 4, 8), playingAreaRes[1])   //1
         assertContentEquals(intArrayOf(0, 0, 2, 4, 8), playingAreaRes[2])   //2
