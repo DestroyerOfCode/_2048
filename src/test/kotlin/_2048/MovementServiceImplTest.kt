@@ -200,6 +200,30 @@ class MovementServiceImplTest {
         assertContentEquals(intArrayOf(2, 4, 0, 2), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(0, 0, 0, 0), playingAreaRes[3])   //3
     }
+    @Test
+    fun whenShiftUp_ThenMoveAndCompactUp3() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 2, 2, 2, 2),
+            /*1*/ intArrayOf(4, 4, 4, 4, 4),
+            /*2*/ intArrayOf(2, 0, 0, 0, 0),
+            /*3*/ intArrayOf(2, 0, 0, 0, 0)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val playingAreaRes: Array<IntArray> = movementService.shift(Direction.UP)
+
+        //then
+        /*  2, 2, 2, 2, 2
+            4, 4, 4, 4, 4
+            4, 0, 0, 0, 0
+            0, 0, 0, 0, 0 */
+        assertContentEquals(intArrayOf(2, 2, 2, 2, 2), playingAreaRes[0])   //0
+        assertContentEquals(intArrayOf(4, 4, 4, 4, 4), playingAreaRes[1])   //1
+        assertContentEquals(intArrayOf(4, 0, 0, 0, 0), playingAreaRes[2])   //2
+        assertContentEquals(intArrayOf(0, 0, 0, 0, 0), playingAreaRes[3])   //3
+    }
 
     @Test
     fun whenShiftDown_ThenMoveAndCompactDown() {
@@ -324,6 +348,30 @@ class MovementServiceImplTest {
         assertContentEquals(intArrayOf(4, 4, 4, 0), playingAreaRes[1])   //1
         assertContentEquals(intArrayOf(4, 2, 0, 0), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(2, 4, 2, 0), playingAreaRes[3])   //3
+    }
+    @Test
+    fun whenShiftLeft_ThenMoveAndCompactLeft2() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 2, 4, 8),
+            /*1*/ intArrayOf(8, 16, 32, 16),
+            /*2*/ intArrayOf(16, 4, 8, 4),
+            /*3*/ intArrayOf(4, 2, 4, 8)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val playingAreaRes: Array<IntArray> = movementService.shift(Direction.LEFT)
+
+        //then
+        /*  4, 4, 8, 0
+            8, 16, 32, 16
+            16, 4, 8, 4
+            4, 2, 4, 8 */
+        assertContentEquals(intArrayOf(4, 4, 8, 0), playingAreaRes[0])   //0
+        assertContentEquals(intArrayOf(8, 16, 32, 16), playingAreaRes[1])   //1
+        assertContentEquals(intArrayOf(16, 4, 8, 4), playingAreaRes[2])   //2
+        assertContentEquals(intArrayOf(4, 2, 4, 8), playingAreaRes[3])   //3
     }
 
     @Test
@@ -569,5 +617,59 @@ class MovementServiceImplTest {
 
         //then
         Assertions.assertFalse(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMovetoAnyDirectionAndBoardFullAndCanShift_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 2, 4, 8),
+            /*1*/ intArrayOf(8, 16, 32, 16),
+            /*2*/ intArrayOf(16, 4, 8, 4),
+            /*3*/ intArrayOf(4, 2, 4, 8)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove()
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMovetoAnyDirectionAndBoardFullAndCannotShift_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(16, 2, 4, 8),
+            /*1*/ intArrayOf(8, 16, 32, 16),
+            /*2*/ intArrayOf(16, 4, 8, 4),
+            /*3*/ intArrayOf(4, 2, 4, 8)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove()
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMovetoAnyDirectionAndBoardNotFull_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 4, 8, 0),
+            /*1*/ intArrayOf(4, 2, 4, 2),
+            /*2*/ intArrayOf(8, 4, 16, 4),
+            /*3*/ intArrayOf(2, 8, 2, 16)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove()
+
+        //then
+        Assertions.assertTrue(canMakeMove)
     }
 }
