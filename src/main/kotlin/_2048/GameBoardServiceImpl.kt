@@ -1,10 +1,17 @@
 package _2048
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 class GameBoardServiceImpl(
     private val gameBoard: GameBoard = GameBoard(),
     private val playerService: PlayerService,
     private val movementService: MovementService
 ) : GameBoardService {
+
+    companion object {
+        private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardServiceImpl::class.java)
+    }
 
     override fun printBoard() {
         gameBoard.playingArea.forEach { row ->
@@ -19,21 +26,26 @@ class GameBoardServiceImpl(
         }
     }
 
-    override fun start() {
-        while (canMakeMove()) {
-            val directionString: String = readln()
-            var direction: Direction?
+    override fun playGame() {
+        while (movementService.canMakeMove()) {
             try {
-                direction = playerService.makeMove(directionString)
-                movementService.shift(direction!!)
-                playerService.addNewTile()
+                playRound()
             } catch (ex: IllegalMoveException) {
-
+                LOGGER.error(ex.message)
             }
         }
     }
 
-    private fun canMakeMove(): Boolean {
+    private fun playRound() {
+        val directionString: String = readln()
+        val direction: Direction? = playerService.makeMove(directionString)
+        movementService.shift(direction!!)
+        playerService.addNewTile()
+//        calculateScoreCount()
+        printBoard()
+    }
+
+    override fun calculateScoreCount() {
         TODO("Not yet implemented")
     }
 }

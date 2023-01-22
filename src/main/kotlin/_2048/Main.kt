@@ -5,5 +5,5 @@ fun main() {
     val playerService: PlayerService = PlayerServiceImpl(gameBoard)
     val movementService: MovementService = MovementServiceImpl(gameBoard)
     val gameBoardService: GameBoardService = GameBoardServiceImpl(gameBoard, playerService, movementService)
-    gameBoardService.start()
+    gameBoardService.playGame()
 }

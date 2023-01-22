@@ -2,6 +2,18 @@ package _2048
 
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
 
+    override fun canMakeMove(): Boolean {
+        var isNotFull = false
+        gameBoard.playingArea.forEach { row ->
+            row.forEach { tile ->
+                if (0 == tile) {
+                    isNotFull = true
+                }
+            }
+        }
+        return isNotFull
+    }
+
     override fun shift(direction: Direction): Array<IntArray> {
         return when (direction) {
             Direction.UP -> shiftUp()
@@ -60,6 +72,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         compactTilesLeft()
         return gameBoard.playingArea
     }
+
 
     private fun mergeTilesLeft() {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->

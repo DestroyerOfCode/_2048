@@ -19,6 +19,7 @@
         <maven.compiler.target>19</maven.compiler.target>
         <jetbrains.kotlin.version>1.7.21</jetbrains.kotlin.version>
         <org.mockito.version>5.0.0</org.mockito.version>
+        <org.slf4j.version>2.0.6</org.slf4j.version>
     </properties>
 
     <repositories>
@@ -94,6 +95,12 @@
                 <version>${org.mockito.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!--Third Party-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -102,18 +109,28 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${jetbrains.kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
-            <version>${jetbrains.kotlin.version}</version>
             <scope>test</scope>
         </dependency>
         <!--Test-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+        </dependency>
+        <!--Third Party-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+            <version>${org.slf4j.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

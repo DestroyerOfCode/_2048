@@ -96,7 +96,7 @@ class PlayerServiceImplTest {
 
         //then
         Assertions.assertEquals(
-            "Invalid move $playerMove. Please use one of 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'",
+            "Invalid move b. Please use one of 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'",
             illegalMoveException.message
         )
     }
