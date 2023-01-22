@@ -1,5 +1,6 @@
 package _2048
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContentEquals
 
@@ -426,4 +427,147 @@ class MovementServiceImplTest {
         assertContentEquals(intArrayOf(0, 0, 2, 4, 2), playingAreaRes[3])   //3
     }
 
+    @Test
+    fun whenMakeMoveToFreeDirectionUp_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 2, 2, 2, 2),
+            /*1*/ intArrayOf(4, 4, 4, 4, 4),
+            /*2*/ intArrayOf(2, 0, 0, 0, 0),
+            /*3*/ intArrayOf(2, 0, 0, 0, 0)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.UP)
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFreeDirectionDown_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(4, 4, 4),
+            /*1*/ intArrayOf(8, 2, 16),
+            /*2*/ intArrayOf(2, 4, 4),
+            /*3*/ intArrayOf(2, 2, 2)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.DOWN)
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFreeDirectionLeft_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 4, 2, 0, 0),
+            /*1*/ intArrayOf(4, 2, 2, 4, 4),
+            /*2*/ intArrayOf(0, 0, 16, 32, 2),
+            /*3*/ intArrayOf(2, 4, 0, 0, 2)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.LEFT)
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFreeDirectionRight_ThenReturnTrue() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(0, 0, 0, 0),
+            /*1*/ intArrayOf(0, 0, 0, 2),
+            /*2*/ intArrayOf(2, 0, 0, 2),
+            /*3*/ intArrayOf(0, 0, 4, 2)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.RIGHT)
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFilledDirectionUp_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(128, 128, 128, 128),
+            /*1*/ intArrayOf(64, 64, 64, 64),
+            /*2*/ intArrayOf(2, 2, 2, 2),
+            /*3*/ intArrayOf(4, 4, 4, 4)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.UP)
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFilledDirectionDown_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(0, 0, 0, 0),
+            /*1*/ intArrayOf(64, 64, 64, 64),
+            /*2*/ intArrayOf(2, 2, 2, 2),
+            /*3*/ intArrayOf(4, 4, 4, 4)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.DOWN)
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFilledDirectionLeft_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(16, 2, 4, 8),
+            /*1*/ intArrayOf(16, 2, 4, 8),
+            /*2*/ intArrayOf(16, 2, 4, 8),
+            /*3*/ intArrayOf(16, 2, 4, 8)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.LEFT)
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
+
+    @Test
+    fun whenMakeMoveToFilledDirectionRight_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(0, 2, 4, 8),
+            /*1*/ intArrayOf(0, 2, 4, 8),
+            /*2*/ intArrayOf(0, 2, 4, 8),
+            /*3*/ intArrayOf(0, 2, 4, 8)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove(Direction.RIGHT)
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
 }
