@@ -3,15 +3,11 @@ package _2048
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
 
     override fun canMakeMove(): Boolean {
-        var isNotFull = false
-        gameBoard.playingArea.forEach { row ->
-            row.forEach { tile ->
-                if (0 == tile) {
-                    isNotFull = true
-                }
-            }
-        }
-        return isNotFull
+        return isPlayingAreaFull() || Direction.values().map { direction -> canShiftBoard(direction) }.contains(true)
+    }
+
+    override fun canMakeMove(direction: Direction): Boolean {
+        return canShiftBoard(direction)
     }
 
     override fun shift(direction: Direction): Array<IntArray> {
@@ -28,6 +24,22 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         mergeTilesRight()
         compactTilesRight()
         return gameBoard.playingArea
+    }
+
+    private fun canShiftBoard(direction: Direction): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    private fun isPlayingAreaFull(): Boolean {
+        var isNotFull = false
+        gameBoard.playingArea.forEach { row ->
+            row.forEach { tile ->
+                if (0 == tile) {
+                    isNotFull = true
+                }
+            }
+        }
+        return isNotFull
     }
 
     private fun mergeTilesRight() {

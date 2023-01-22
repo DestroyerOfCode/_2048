@@ -53,7 +53,7 @@ class PlayerServiceImplTest {
         playerService = PlayerServiceImpl(GameBoard())
 
         //when
-        val direction: Direction? = playerService.makeMove(playerMove)
+        val direction: Direction? = playerService.getDirectionOfShift(playerMove)
 
         //then
         Assertions.assertEquals(Direction.UP, direction)
@@ -92,7 +92,7 @@ class PlayerServiceImplTest {
 
         //when
         val illegalMoveException: IllegalMoveException =
-            Assertions.assertThrows(IllegalMoveException::class.java) { playerService.makeMove(playerMove) }
+            Assertions.assertThrows(IllegalMoveException::class.java) { playerService.getDirectionOfShift(playerMove) }
 
         //then
         Assertions.assertEquals(

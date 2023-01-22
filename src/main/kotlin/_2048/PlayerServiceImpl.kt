@@ -20,7 +20,7 @@ class PlayerServiceImpl(
         return gameBoard
     }
 
-    override fun makeMove(move: String): Direction? {
+    override fun getDirectionOfShift(move: String): Direction? {
         isMoveValid(move)
 
         return Direction.values().find { it.keyboardButton == move.lowercase() }

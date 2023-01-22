@@ -27,22 +27,36 @@ class GameBoardServiceImpl(
     }
 
     override fun playGame() {
-        while (movementService.canMakeMove()) {
+        gameLoop@ while (movementService.canMakeMove()) {
             try {
-                playRound()
+                val direction: Direction = chooseDirectionToShift()
+
+                //when making a move that would change no position of tiles
+                if (!movementService.canMakeMove(direction)) {
+                    continue@gameLoop
+                }
+
+                //both players movement
+                playRound(direction)
+
             } catch (ex: IllegalMoveException) {
                 LOGGER.error(ex.message)
             }
         }
     }
 
-    private fun playRound() {
-        val directionString: String = readln()
-        val direction: Direction? = playerService.makeMove(directionString)
-        movementService.shift(direction!!)
+    private fun playRound(direction: Direction) {
+        movementService.shift(direction)
         playerService.addNewTile()
-//        calculateScoreCount()
+        //        calculateScoreCount()
         printBoard()
+    }
+
+    private fun chooseDirectionToShift(): Direction {
+        val directionString: String = readln()
+        val direction: Direction? = playerService.getDirectionOfShift(directionString)
+
+        return direction!!
     }
 
     override fun calculateScoreCount() {
