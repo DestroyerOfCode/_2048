@@ -200,6 +200,7 @@ class MovementServiceImplTest {
         assertContentEquals(intArrayOf(2, 4, 0, 2), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(0, 0, 0, 0), playingAreaRes[3])   //3
     }
+
     @Test
     fun whenShiftUp_ThenMoveAndCompactUp3() {
         //given
@@ -349,6 +350,7 @@ class MovementServiceImplTest {
         assertContentEquals(intArrayOf(4, 2, 0, 0), playingAreaRes[2])   //2
         assertContentEquals(intArrayOf(2, 4, 2, 0), playingAreaRes[3])   //3
     }
+
     @Test
     fun whenShiftLeft_ThenMoveAndCompactLeft2() {
         //given

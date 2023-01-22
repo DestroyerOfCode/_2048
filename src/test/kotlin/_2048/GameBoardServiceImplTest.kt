@@ -2,8 +2,8 @@ package _2048
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 import org.mockito.BDDMockito
+import org.mockito.Mockito
 import java.io.ByteArrayInputStream
 
 class GameBoardServiceImplTest {
