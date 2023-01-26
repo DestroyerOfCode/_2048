@@ -3,12 +3,40 @@ package _2048
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
 
     override fun canMakeMove(): Boolean {
-        return isPlayingAreaNotFull() || Direction.values().map { direction -> canShiftBoard(direction) }
-            .contains(true)
+        return isPlayingAreaNotFull() or Direction.values().any { direction -> isMoveLegal(direction) }
     }
 
-    override fun canMakeMove(direction: Direction): Boolean {
-        return canShiftBoard(direction)
+    override fun isMoveLegal(direction: Direction): Boolean {
+        return when (direction) {
+            Direction.UP -> transposeFromRowToColumn(gameBoard.playingArea).any { canShift(it) }
+            Direction.DOWN -> transposeFromRowToColumn(gameBoard.playingArea).any { canShift(it) }
+            Direction.LEFT -> gameBoard.playingArea.any { canShift(it) }
+            Direction.RIGHT -> gameBoard.playingArea.reversed().any { canShift(it) }
+        }
+
+    }
+
+    private fun canShift(row: IntArray): Boolean {
+
+        for (i in row.lastIndex downTo 1) {
+            if (row[i] == 0) { //this is for compacting tiles
+                for (j in i - 1 downTo 0) {
+                    if (row[j] != 0) {
+                        return true
+                    }
+                }
+            } else { //this is condition where we try to merge tiles
+                for (j in i - 1 downTo 0) {
+                    if (row[i] == row[j]) {
+                        return true
+                    }
+                    if (row[j] != 0) {
+                        break
+                    }
+                }
+            }
+        }
+        return false
     }
 
     override fun shift(direction: Direction): Array<IntArray> {
@@ -27,44 +55,35 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         return gameBoard.playingArea
     }
 
-    private fun canShiftBoard(direction: Direction): Boolean {
-        val comparedGameBoard: Array<IntArray> =
-            Array(gameBoard.playingArea.size) { (gameBoard.playingArea[it]).copyOf() }
+    private fun containsEmptyTile(row: IntArray): Boolean {
+        return row.contains(0)
+    }
 
-        return when (direction) {
-            Direction.UP -> (this.gameBoard.playingArea contentDeepEquals compactTilesUp(comparedGameBoard)).not() or
-                    (this.gameBoard.playingArea contentDeepEquals mergeTilesUp(
-                        comparedGameBoard
-                    )).not()
+    private fun isAnAdjacentTileIdentical(playingArea: IntArray): Boolean {
 
-            Direction.DOWN -> (this.gameBoard.playingArea contentDeepEquals compactTilesDown(comparedGameBoard)).not() or
-                    (this.gameBoard.playingArea contentDeepEquals mergeTilesDown(
-                        comparedGameBoard
-                    )).not()
-
-
-            Direction.LEFT -> (this.gameBoard.playingArea contentDeepEquals compactTilesLeft(comparedGameBoard)).not() or
-                    (this.gameBoard.playingArea contentDeepEquals mergeTilesLeft(
-                        comparedGameBoard
-                    )).not()
-
-            Direction.RIGHT -> (this.gameBoard.playingArea contentDeepEquals compactTilesRight(comparedGameBoard)).not() or
-                    (this.gameBoard.playingArea contentDeepEquals mergeTilesRight(
-                        comparedGameBoard
-                    )).not()
+        var isIdentical = false
+        for (i in 0 until playingArea.lastIndex) {
+            if (playingArea[i] == playingArea[i + 1]) {
+                isIdentical = true
+                break
+            }
         }
+        return isIdentical
+    }
+
+    private fun transposeFromRowToColumn(playingArea: Array<IntArray>): Array<IntArray> {
+        val transposedPlayingArea: Array<IntArray> = Array(playingArea[0].size) { IntArray(playingArea.size) }
+        playingArea.forEachIndexed { rowIndex, row ->
+            for (i in 0 until row.lastIndex + 1) {
+                transposedPlayingArea[i][rowIndex] = playingArea[rowIndex][i]
+            }
+        }
+
+        return transposedPlayingArea
     }
 
     private fun isPlayingAreaNotFull(): Boolean {
-        var isNotFull = false
-        gameBoard.playingArea.forEach { row ->
-            row.forEach { tile ->
-                if (0 == tile) {
-                    isNotFull = true
-                }
-            }
-        }
-        return isNotFull
+        return gameBoard.playingArea.any { row -> row.contains(0) }
     }
 
     private fun mergeTilesRight(): Array<IntArray> {

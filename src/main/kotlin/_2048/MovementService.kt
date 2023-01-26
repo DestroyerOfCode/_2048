@@ -6,7 +6,7 @@ interface MovementService {
     fun shiftDown(): Array<IntArray>
     fun shiftRight(): Array<IntArray>
     fun shiftLeft(): Array<IntArray>
-    fun canMakeMove(direction: Direction): Boolean
+    fun isMoveLegal(direction: Direction): Boolean
     fun canMakeMove(): Boolean
 
 }

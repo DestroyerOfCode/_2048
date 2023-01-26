@@ -32,7 +32,7 @@ class GameBoardServiceImpl(
                 val direction: Direction = chooseDirectionToShift()
 
                 //when making a move that would change no position of tiles
-                if (!movementService.canMakeMove(direction)) {
+                if (!movementService.isMoveLegal(direction)) {
                     continue@gameLoop
                 }
 

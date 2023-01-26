@@ -489,7 +489,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.UP)
+        val canMakeMove = movementService.isMoveLegal(Direction.UP)
 
         //then
         Assertions.assertTrue(canMakeMove)
@@ -507,7 +507,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.DOWN)
+        val canMakeMove = movementService.isMoveLegal(Direction.DOWN)
 
         //then
         Assertions.assertTrue(canMakeMove)
@@ -525,7 +525,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.LEFT)
+        val canMakeMove = movementService.isMoveLegal(Direction.LEFT)
 
         //then
         Assertions.assertTrue(canMakeMove)
@@ -543,7 +543,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.RIGHT)
+        val canMakeMove = movementService.isMoveLegal(Direction.RIGHT)
 
         //then
         Assertions.assertTrue(canMakeMove)
@@ -561,7 +561,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.UP)
+        val canMakeMove = movementService.isMoveLegal(Direction.UP)
 
         //then
         Assertions.assertFalse(canMakeMove)
@@ -579,7 +579,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.DOWN)
+        val canMakeMove = movementService.isMoveLegal(Direction.DOWN)
 
         //then
         Assertions.assertFalse(canMakeMove)
@@ -597,7 +597,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.LEFT)
+        val canMakeMove = movementService.isMoveLegal(Direction.LEFT)
 
         //then
         Assertions.assertFalse(canMakeMove)
@@ -615,7 +615,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(GameBoard(board))
 
         //when
-        val canMakeMove = movementService.canMakeMove(Direction.RIGHT)
+        val canMakeMove = movementService.isMoveLegal(Direction.RIGHT)
 
         //then
         Assertions.assertFalse(canMakeMove)
@@ -664,6 +664,21 @@ class MovementServiceImplTest {
             /*0*/ intArrayOf(2, 4, 8, 0),
             /*1*/ intArrayOf(4, 2, 4, 2),
             /*2*/ intArrayOf(8, 4, 16, 4),
+            /*3*/ intArrayOf(2, 8, 2, 16)
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.canMakeMove()
+
+        //then
+        Assertions.assertTrue(canMakeMove)
+    }
+    @Test
+    fun whenMakeMovetoAnyDirectionAndBoardNotFull_ThenReturnTrue2() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(0, 0, 0, 0),
             /*3*/ intArrayOf(2, 8, 2, 16)
         )
         movementService = MovementServiceImpl(GameBoard(board))

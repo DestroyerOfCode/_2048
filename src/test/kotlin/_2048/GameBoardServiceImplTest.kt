@@ -2,7 +2,11 @@ package _2048
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito
+import org.mockito.BDDMockito.doCallRealMethod
+import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.never
+import org.mockito.BDDMockito.times
+import org.mockito.BDDMockito.verify
 import org.mockito.Mockito
 import java.io.ByteArrayInputStream
 
@@ -17,17 +21,17 @@ class GameBoardServiceImplTest {
     fun whenPlayGameAndMakeIllegalMove_ThenThrowsException() {
         //given
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
-        BDDMockito.given(movementService.canMakeMove()).willReturn(true, false)
-        BDDMockito.doCallRealMethod().`when`(playerService).getDirectionOfShift("q")
+        given(movementService.canMakeMove()).willReturn(true, false)
+        doCallRealMethod().`when`(playerService).getDirectionOfShift("q")
         provideInput("q")
 
         //when
         gameBoardService.playGame()
 
         //then
-        BDDMockito.verify(playerService, BDDMockito.never()).addNewTile()
+        verify(playerService, never()).addNewTile()
         Direction.values().forEach { direction: Direction ->
-            BDDMockito.verify(movementService, BDDMockito.never()).shift(direction)
+            verify(movementService, never()).shift(direction)
         }
 
     }
@@ -36,18 +40,18 @@ class GameBoardServiceImplTest {
     fun whenPlayGameAndMakeValidMove_ThenCallShiftAndAddNewTile() {
         //given
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
-        BDDMockito.given(playerService.getDirectionOfShift("w")).willReturn(Direction.UP)
-        BDDMockito.given(movementService.canMakeMove()).willReturn(true, false)
-        BDDMockito.given(movementService.canMakeMove(Direction.UP)).willReturn(true)
+        given(playerService.getDirectionOfShift("w")).willReturn(Direction.UP)
+        given(movementService.canMakeMove()).willReturn(true, false)
+        given(movementService.isMoveLegal(Direction.UP)).willReturn(true)
         provideInput("w")
 
         //when
         gameBoardService.playGame()
 
         //then
-        BDDMockito.verify(playerService, BDDMockito.times(1)).getDirectionOfShift("w")
-        BDDMockito.verify(movementService, BDDMockito.times(1)).shift(Direction.UP)
-        BDDMockito.verify(playerService, BDDMockito.times(1)).addNewTile()
+        verify(playerService, times(1)).getDirectionOfShift("w")
+        verify(movementService, times(1)).shift(Direction.UP)
+        verify(playerService, times(1)).addNewTile()
     }
 
     @AfterEach
