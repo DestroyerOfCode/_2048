@@ -24,16 +24,15 @@ class PlayerServiceImplTest {
     @Test
     fun whenAddNewTileToFilledPlayingArea_ThenGameBoardSizeIncrementsByOne() {
         //given
-        val wantedNumberOfNonZeroTiles = intArrayOf(13)
+        val wantedNumberOfNonZeroTiles = intArrayOf(15)
         playerService = PlayerServiceImpl(
             GameBoard(
                 arrayOf(
                     intArrayOf(2, 0, 2, 2, 2),
                     intArrayOf(0, 0, 2, 2, 0),
-                    intArrayOf(2, 2, 2),
-                    intArrayOf(2, 0, 2, 2),
-                    intArrayOf(0, 0, 0, 0),
-                    intArrayOf(0)
+                    intArrayOf(2, 2, 2, 2, 2),
+                    intArrayOf(2, 0, 2, 2, 0),
+                    intArrayOf(0, 0, 0, 0, 0)
                 )
             )
         )
@@ -42,7 +41,7 @@ class PlayerServiceImplTest {
         val boardRes: GameBoard = playerService.addNewTile()
 
         //then
-        assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 10")
+        assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 15")
 
     }
 

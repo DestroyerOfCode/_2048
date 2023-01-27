@@ -205,10 +205,10 @@ class MovementServiceImplTest {
     fun whenShiftUp_ThenMoveAndCompactUp3() {
         //given
         val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(2, 2, 2, 2, 2),
-            /*1*/ intArrayOf(4, 4, 4, 4, 4),
-            /*2*/ intArrayOf(2, 0, 0, 0, 0),
-            /*3*/ intArrayOf(2, 0, 0, 0, 0)
+            /*0*/ intArrayOf(2, 2, 2, 2),
+            /*1*/ intArrayOf(4, 4, 4, 4),
+            /*2*/ intArrayOf(2, 0, 0, 0),
+            /*3*/ intArrayOf(2, 0, 0, 0)
         )
         movementService = MovementServiceImpl(GameBoard(board))
 
@@ -220,10 +220,10 @@ class MovementServiceImplTest {
             4, 4, 4, 4, 4
             4, 0, 0, 0, 0
             0, 0, 0, 0, 0 */
-        assertContentEquals(intArrayOf(2, 2, 2, 2, 2), playingAreaRes[0])   //0
-        assertContentEquals(intArrayOf(4, 4, 4, 4, 4), playingAreaRes[1])   //1
-        assertContentEquals(intArrayOf(4, 0, 0, 0, 0), playingAreaRes[2])   //2
-        assertContentEquals(intArrayOf(0, 0, 0, 0, 0), playingAreaRes[3])   //3
+        assertContentEquals(intArrayOf(2, 2, 2, 2), playingAreaRes[0])   //0
+        assertContentEquals(intArrayOf(4, 4, 4, 4), playingAreaRes[1])   //1
+        assertContentEquals(intArrayOf(4, 0, 0, 0), playingAreaRes[2])   //2
+        assertContentEquals(intArrayOf(0, 0, 0, 0), playingAreaRes[3])   //3
     }
 
     @Test
@@ -455,10 +455,10 @@ class MovementServiceImplTest {
     fun whenShiftRightWithBiggerBoard_ThenMoveAndCompactRight() {
         //given
         val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(2, 4, 2, 2, 2),
-            /*1*/ intArrayOf(4, 2, 2, 4, 4),
-            /*2*/ intArrayOf(2, 0, 2, 2, 8),
-            /*3*/ intArrayOf(2, 4, 0, 2, 0)
+            /*0*/ intArrayOf(4, 2, 2, 2),
+            /*1*/ intArrayOf(2, 2, 4, 4),
+            /*2*/ intArrayOf(0, 2, 2, 8),
+            /*3*/ intArrayOf(4, 0, 2, 0)
         )
         movementService = MovementServiceImpl(GameBoard(board))
 
@@ -471,20 +471,20 @@ class MovementServiceImplTest {
             0, 0, 2, 4, 8
             0, 0, 2, 4, 2 */
 
-        assertContentEquals(intArrayOf(0, 2, 4, 2, 4), playingAreaRes[0])   //0
-        assertContentEquals(intArrayOf(0, 0, 4, 4, 8), playingAreaRes[1])   //1
-        assertContentEquals(intArrayOf(0, 0, 2, 4, 8), playingAreaRes[2])   //2
-        assertContentEquals(intArrayOf(0, 0, 2, 4, 2), playingAreaRes[3])   //3
+        assertContentEquals(intArrayOf(0, 4, 2, 4), playingAreaRes[0])   //0
+        assertContentEquals(intArrayOf(0, 0, 4, 8), playingAreaRes[1])   //1
+        assertContentEquals(intArrayOf(0, 0, 4, 8), playingAreaRes[2])   //2
+        assertContentEquals(intArrayOf(0, 0, 4, 2), playingAreaRes[3])   //3
     }
 
     @Test
     fun whenMakeMoveToFreeDirectionUp_ThenReturnTrue() {
         //given
         val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(2, 2, 2, 2, 2),
-            /*1*/ intArrayOf(4, 4, 4, 4, 4),
-            /*2*/ intArrayOf(2, 0, 0, 0, 0),
-            /*3*/ intArrayOf(2, 0, 0, 0, 0)
+            /*0*/ intArrayOf(2, 2, 2, 2),
+            /*1*/ intArrayOf(4, 4, 4, 4),
+            /*2*/ intArrayOf(2, 0, 0, 0),
+            /*3*/ intArrayOf(2, 0, 0, 0)
         )
         movementService = MovementServiceImpl(GameBoard(board))
 
@@ -499,10 +499,10 @@ class MovementServiceImplTest {
     fun whenMakeMoveToFreeDirectionDown_ThenReturnTrue() {
         //given
         val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(4, 4, 4),
-            /*1*/ intArrayOf(8, 2, 16),
-            /*2*/ intArrayOf(2, 4, 4),
-            /*3*/ intArrayOf(2, 2, 2)
+            /*0*/ intArrayOf(4, 4, 4, 0),
+            /*1*/ intArrayOf(8, 2, 16, 0),
+            /*2*/ intArrayOf(2, 4, 4, 0),
+            /*3*/ intArrayOf(2, 2, 2, 0)
         )
         movementService = MovementServiceImpl(GameBoard(board))
 
@@ -517,10 +517,10 @@ class MovementServiceImplTest {
     fun whenMakeMoveToFreeDirectionLeft_ThenReturnTrue() {
         //given
         val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(2, 4, 2, 0, 0),
-            /*1*/ intArrayOf(4, 2, 2, 4, 4),
-            /*2*/ intArrayOf(0, 0, 16, 32, 2),
-            /*3*/ intArrayOf(2, 4, 0, 0, 2)
+            /*0*/ intArrayOf(4, 2, 0, 0),
+            /*1*/ intArrayOf(2, 2, 4, 4),
+            /*2*/ intArrayOf(0, 16, 32, 2),
+            /*3*/ intArrayOf(4, 0, 0, 2)
         )
         movementService = MovementServiceImpl(GameBoard(board))
 
@@ -674,19 +674,5 @@ class MovementServiceImplTest {
         //then
         Assertions.assertTrue(canMakeMove)
     }
-    @Test
-    fun whenMakeMovetoAnyDirectionAndBoardNotFull_ThenReturnTrue2() {
-        //given
-        val board: Array<IntArray> = arrayOf(
-            /*0*/ intArrayOf(0, 0, 0, 0),
-            /*3*/ intArrayOf(2, 8, 2, 16)
-        )
-        movementService = MovementServiceImpl(GameBoard(board))
 
-        //when
-        val canMakeMove = movementService.canMakeMove()
-
-        //then
-        Assertions.assertTrue(canMakeMove)
-    }
 }

@@ -8,32 +8,48 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
 
     override fun isMoveLegal(direction: Direction): Boolean {
         return when (direction) {
-            Direction.UP -> transposeFromRowToColumn(gameBoard.playingArea).any { canShift(it) }
-            Direction.DOWN -> transposeFromRowToColumn(gameBoard.playingArea).any { canShift(it) }
-            Direction.LEFT -> gameBoard.playingArea.any { canShift(it) }
-            Direction.RIGHT -> gameBoard.playingArea.reversed().any { canShift(it) }
+            Direction.UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
+            Direction.DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
+            Direction.LEFT -> canShift(gameBoard.playingArea)
+            Direction.RIGHT -> canShift(gameBoard.playingArea)
         }
+    }
 
+    private fun canShift(playingArea: Array<IntArray>): Boolean {
+        return playingArea.any { canShift(it) }
     }
 
     private fun canShift(row: IntArray): Boolean {
-
         for (i in row.lastIndex downTo 1) {
-            if (row[i] == 0) { //this is for compacting tiles
-                for (j in i - 1 downTo 0) {
-                    if (row[j] != 0) {
-                        return true
-                    }
+            if (isRowEmpty(row, i)) { //this is for compacting tiles
+                if (canCompactTiles(i, row)) {
+                    return true
                 }
-            } else { //this is condition where we try to merge tiles
-                for (j in i - 1 downTo 0) {
-                    if (row[i] == row[j]) {
-                        return true
-                    }
-                    if (row[j] != 0) {
-                        break
-                    }
+            } else {
+                if (canMergeTiles(i, row)) {
+                    return true
                 }
+            }
+        }
+        return false
+    }
+
+    private fun canCompactTiles(i: Int, row: IntArray): Boolean {
+        for (j in i - 1 downTo 0) {
+            if (row[j] != 0) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun canMergeTiles(rowIndex: Int, row: IntArray): Boolean {
+        for (j in rowIndex - 1 downTo 0) {
+            if (row[rowIndex] == row[j]) {
+                return true
+            }
+            if (row[j] != 0) {
+                break
             }
         }
         return false
@@ -53,22 +69,6 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         mergeTilesRight()
         compactTilesRight()
         return gameBoard.playingArea
-    }
-
-    private fun containsEmptyTile(row: IntArray): Boolean {
-        return row.contains(0)
-    }
-
-    private fun isAnAdjacentTileIdentical(playingArea: IntArray): Boolean {
-
-        var isIdentical = false
-        for (i in 0 until playingArea.lastIndex) {
-            if (playingArea[i] == playingArea[i + 1]) {
-                isIdentical = true
-                break
-            }
-        }
-        return isIdentical
     }
 
     private fun transposeFromRowToColumn(playingArea: Array<IntArray>): Array<IntArray> {
@@ -118,7 +118,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
     private fun compactTilesRight(playingArea: Array<IntArray>): Array<IntArray> {
         for (row in playingArea.indices.reversed()) {
             for (column in playingArea[0].indices.reversed()) {
-                if (0 == playingArea[row][column]) {
+                if (isRowEmpty(playingArea[row], column)) {
                     for (column2 in column - 1 downTo 0) {
                         if (0 != playingArea[row][column2]) {
                             playingArea[row][column] = playingArea[row][column2]
@@ -206,7 +206,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
     private fun compactTilesDown(playingArea: Array<IntArray>): Array<IntArray> {
         for (row in playingArea.indices.reversed()) {
             for (column in playingArea[0].indices.reversed()) {
-                if (0 == playingArea[row][column]) {
+                if (isRowEmpty(playingArea[row], column)) {
                     for (row2 in row - 1 downTo 0) {
                         if (0 != playingArea[row2][column]) {
                             playingArea[row][column] = playingArea[row2][column]
@@ -219,6 +219,8 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         }
         return playingArea
     }
+
+    private fun isRowEmpty(row: IntArray, i: Int) = 0 == row[i]
 
     private fun mergeTilesDown() {
         mergeTilesDown(gameBoard.playingArea)

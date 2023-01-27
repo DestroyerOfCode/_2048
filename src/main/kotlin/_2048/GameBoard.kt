@@ -8,8 +8,15 @@ class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(
         const val BOX_HEIGHT = 4
         const val BOX_WIDTH = 4
     }
-
     init {
+        if (playingArea.isEmpty() || playingArea.any { it.isEmpty() }) {
+            throw IllegalPlayingBoardSizeException("You cannot pick and empty Row or Column!")
+        }
+
+        if (playingArea.size != playingArea[0].size) {
+            throw IllegalPlayingBoardSizeException("Height and Width of Playing Board must be indifferent!")
+        }
+
         if (isPlayingAreaEmpty()) {
             initBoard()
         }
