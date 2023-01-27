@@ -9,6 +9,7 @@ import org.mockito.BDDMockito.never
 import org.mockito.BDDMockito.times
 import org.mockito.BDDMockito.verify
 import org.mockito.Mockito
+import org.mockito.Mockito.doReturn
 import java.io.ByteArrayInputStream
 import kotlin.test.assertEquals
 
@@ -70,7 +71,8 @@ class GameBoardServiceImplTest {
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
         given(playerService.getDirectionOfShift("w")).willReturn(Direction.UP)
         given(movementService.canMakeMove()).willReturn(true, false)
-        given(movementService.isMoveLegal(Direction.UP)).willReturn(true)
+        doReturn(true).`when`(movementService).isMoveLegal(Direction.UP)
+        doReturn(arrayOf(intArrayOf())).`when`(movementService).shift(Direction.UP)
         provideInput("w")
 
         //when
