@@ -47,10 +47,10 @@ class GameBoardServiceImpl(
     }
 
     private fun playRound(direction: Direction) {
-        movementService.shift(direction)
+        gameBoard.playingArea = movementService.shift(direction)
         playerService.addNewTile()
-        //        calculateScoreCount()
         printBoard()
+        println(gameBoard.score)
     }
 
     private fun chooseDirectionToShift(): Direction {

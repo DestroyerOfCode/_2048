@@ -3,11 +3,15 @@ package _2048
 import kotlin.random.Random
 
 
-class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) }) {
+class GameBoard(
+    var playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
+    var score: Int = 0
+) {
     companion object {
         const val BOX_HEIGHT = 4
         const val BOX_WIDTH = 4
     }
+
     init {
         if (playingArea.isEmpty() || playingArea.any { it.isEmpty() }) {
             throw IllegalPlayingBoardSizeException("You cannot pick an empty Row or Column!")
