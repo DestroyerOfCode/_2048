@@ -602,6 +602,23 @@ class MovementServiceImplTest {
         //then
         Assertions.assertFalse(canMakeMove)
     }
+    @Test
+    fun whenMakeMoveLeftAndCantShift_ThenReturnFalse() {
+        //given
+        val board: Array<IntArray> = arrayOf(
+            /*0*/ intArrayOf(2, 4, 2, 0),
+                  intArrayOf(2, 4, 2, 0),
+                  intArrayOf(4, 0, 0, 0),
+                  intArrayOf(8, 2, 0, 0),
+        )
+        movementService = MovementServiceImpl(GameBoard(board))
+
+        //when
+        val canMakeMove = movementService.isMoveLegal(Direction.LEFT)
+
+        //then
+        Assertions.assertFalse(canMakeMove)
+    }
 
     @Test
     fun whenMakeMoveToFilledDirectionRight_ThenReturnFalse() {

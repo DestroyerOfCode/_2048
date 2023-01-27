@@ -27,6 +27,7 @@ class GameBoardServiceImpl(
     }
 
     override fun playGame() {
+        printBoard()
         gameLoop@ while (movementService.canMakeMove()) {
             try {
                 val direction: Direction = chooseDirectionToShift()
@@ -59,7 +60,4 @@ class GameBoardServiceImpl(
         return direction!!
     }
 
-    override fun calculateScoreCount() {
-        TODO("Not yet implemented")
-    }
 }

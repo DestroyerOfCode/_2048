@@ -10,7 +10,7 @@ class GameBoard(val playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(
     }
     init {
         if (playingArea.isEmpty() || playingArea.any { it.isEmpty() }) {
-            throw IllegalPlayingBoardSizeException("You cannot pick and empty Row or Column!")
+            throw IllegalPlayingBoardSizeException("You cannot pick an empty Row or Column!")
         }
 
         if (playingArea.size != playingArea[0].size) {

@@ -9,8 +9,8 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
     override fun isMoveLegal(direction: Direction): Boolean {
         return when (direction) {
             Direction.UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
-            Direction.DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
-            Direction.LEFT -> canShift(gameBoard.playingArea)
+            Direction.DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
+            Direction.LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
             Direction.RIGHT -> canShift(gameBoard.playingArea)
         }
     }
