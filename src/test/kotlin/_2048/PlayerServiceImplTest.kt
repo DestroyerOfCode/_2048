@@ -1,5 +1,6 @@
 package _2048
 
+import _2048.Direction.UP
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -54,7 +55,7 @@ class PlayerServiceImplTest {
         val direction: Direction? = playerService.getDirectionOfShift(playerMove)
 
         //then
-        Assertions.assertEquals(Direction.UP, direction)
+        Assertions.assertEquals(UP, direction)
     }
 
     @Test

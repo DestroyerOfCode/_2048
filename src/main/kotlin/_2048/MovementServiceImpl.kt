@@ -1,16 +1,21 @@
 package _2048
 
+import _2048.Direction.DOWN
+import _2048.Direction.LEFT
+import _2048.Direction.RIGHT
+import _2048.Direction.UP
+
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
     override fun shift(direction: Direction): Array<IntArray> {
         return when (direction) {
-            Direction.UP -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea)))
+            UP -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea)))
             //transposing and reversing twice because I need to return the original board
-            Direction.DOWN -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea).map { it.reversedArray() }
+            DOWN -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea).map { it.reversedArray() }
                 .toTypedArray())).reversedArray()
 
-            Direction.LEFT -> shift(gameBoard.playingArea)
+            LEFT -> shift(gameBoard.playingArea)
             //reversing twice because I need to return the original board
-            Direction.RIGHT -> shift(gameBoard.playingArea.map { it.reversedArray() }
+            RIGHT -> shift(gameBoard.playingArea.map { it.reversedArray() }
                 .toTypedArray()).map { it.reversedArray() }.toTypedArray()
         }
     }
@@ -21,12 +26,12 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
 
     override fun isMoveLegal(direction: Direction): Boolean {
         return when (direction) {
-            Direction.UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
-            Direction.DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }
+            UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
+            DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }
                 .toTypedArray()))
 
-            Direction.LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
-            Direction.RIGHT -> canShift(gameBoard.playingArea)
+            LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
+            RIGHT -> canShift(gameBoard.playingArea)
         }
     }
 

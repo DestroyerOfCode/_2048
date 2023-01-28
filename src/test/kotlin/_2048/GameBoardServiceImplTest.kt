@@ -1,5 +1,6 @@
 package _2048
 
+import _2048.Direction.UP
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -69,10 +70,10 @@ class GameBoardServiceImplTest {
     fun whenPlayGameAndMakeValidMove_ThenCallShiftAndAddNewTile() {
         //given
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
-        given(playerService.getDirectionOfShift("w")).willReturn(Direction.UP)
+        given(playerService.getDirectionOfShift("w")).willReturn(UP)
         given(movementService.canMakeMove()).willReturn(true, false)
-        doReturn(true).`when`(movementService).isMoveLegal(Direction.UP)
-        doReturn(arrayOf(intArrayOf())).`when`(movementService).shift(Direction.UP)
+        doReturn(true).`when`(movementService).isMoveLegal(UP)
+        doReturn(arrayOf(intArrayOf())).`when`(movementService).shift(UP)
         provideInput("w")
 
         //when
@@ -80,7 +81,7 @@ class GameBoardServiceImplTest {
 
         //then
         verify(playerService, times(1)).getDirectionOfShift("w")
-        verify(movementService, times(1)).shift(Direction.UP)
+        verify(movementService, times(1)).shift(UP)
         verify(playerService, times(1)).addNewTile()
     }
 
