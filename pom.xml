@@ -20,6 +20,7 @@
         <jetbrains.kotlin.version>1.7.21</jetbrains.kotlin.version>
         <org.mockito.version>5.0.0</org.mockito.version>
         <org.slf4j.version>2.0.6</org.slf4j.version>
+        <org.junit.jupiter.version>5.9.2</org.junit.jupiter.version>
     </properties>
 
     <repositories>
@@ -95,6 +96,11 @@
                 <version>${org.mockito.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${org.junit.jupiter.version}</version>
+            </dependency>
             <!--Third Party-->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -114,11 +120,25 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--Test-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
         </dependency>
         <!--Third Party-->
         <dependency>
@@ -131,6 +151,12 @@
             <version>${org.slf4j.version}</version>
             <type>pom</type>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
