@@ -1,6 +1,9 @@
-package _2048
+package _2048.player
 
-import _2048.Direction.UP
+import _2048.IllegalMoveException
+import _2048.gameboard.Direction
+import _2048.gameboard.Direction.UP
+import _2048.gameboard.GameBoard
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

@@ -1,27 +1,27 @@
 package _2048.utils
 
-import _2048.Direction.DOWN
-import _2048.Direction.LEFT
-import _2048.Direction.RIGHT
-import _2048.Direction.UP
+import _2048.gameboard.Direction.DOWN
+import _2048.gameboard.Direction.LEFT
+import _2048.gameboard.Direction.RIGHT
+import _2048.gameboard.Direction.UP
 import org.junit.jupiter.params.provider.Arguments
 import java.util.stream.Stream
 
-open class MovementServiceUtils {
+open class MovementServiceTestUtils {
 
-    class ShiftingMovements : MovementServiceUtils() {
+    class ShiftingMovements : MovementServiceTestUtils() {
         companion object {
-            fun createVerticalShiftingArguments(): Stream<out Arguments> = Stream.concat(
+            fun createVerticalShiftingArguments(): Stream<Arguments> = Stream.concat(
                 createShiftUpArguments(),
                 createShiftDownArguments(),
             )
 
-            fun createHorizontalShiftingArguments(): Stream<out Arguments> = Stream.concat(
+            fun createHorizontalShiftingArguments(): Stream<Arguments> = Stream.concat(
                 createShiftLeftArguments(),
                 createShiftRightArguments()
             )
 
-            private fun createShiftUpArguments(): Stream<out Arguments> = Stream.of(
+            private fun createShiftUpArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(0, 0, 0, 0),
@@ -141,7 +141,7 @@ open class MovementServiceUtils {
                 )
             )
 
-            private fun createShiftDownArguments(): Stream<out Arguments> = Stream.of(
+            private fun createShiftDownArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(0, 0, 4, 2),
@@ -183,7 +183,7 @@ open class MovementServiceUtils {
                 ),
             )
 
-            private fun createShiftLeftArguments(): Stream<out Arguments> = Stream.of(
+            private fun createShiftLeftArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(8, 8, 4, 0),
@@ -225,7 +225,7 @@ open class MovementServiceUtils {
                 )
             )
 
-            private fun createShiftRightArguments(): Stream<out Arguments> = Stream.of(
+            private fun createShiftRightArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(0, 4, 8, 8),
@@ -284,9 +284,9 @@ open class MovementServiceUtils {
         }
     }
 
-    class LegalityMovements : MovementServiceUtils() {
+    class LegalityMovements : MovementServiceTestUtils() {
         companion object {
-            fun createMakeMoveTrueArguments(): Stream<out Arguments> = Stream.of(
+            fun createMakeMoveTrueArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(2, 2, 4, 8),
@@ -307,7 +307,7 @@ open class MovementServiceUtils {
                 )
             )
 
-            fun createMakeMoveFalseArguments(): Stream<out Arguments> = Stream.of(
+            fun createMakeMoveFalseArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(16, 2, 4, 8),
@@ -319,12 +319,12 @@ open class MovementServiceUtils {
                 )
             )
 
-            fun createHorizontalIsMoveLegalArguments(): Stream<out Arguments> = Stream.concat(
+            fun createHorizontalIsMoveLegalArguments(): Stream<Arguments> = Stream.concat(
                 createIsMoveLegalLeftArguments(),
                 createIsMoveLegalRightArguments()
             )
 
-            fun createVerticalIsMoveLegalArguments(): Stream<out Arguments> = Stream.concat(
+            fun createVerticalIsMoveLegalArguments(): Stream<Arguments> = Stream.concat(
                 createIsMoveLegalUpArguments(),
                 createIsMoveLegalDownArguments(),
 
@@ -353,7 +353,7 @@ open class MovementServiceUtils {
                 )
             )
 
-            private fun createIsMoveLegalDownArguments(): Stream<out Arguments> = Stream.of(
+            private fun createIsMoveLegalDownArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(0, 0, 0, 0),
@@ -376,7 +376,7 @@ open class MovementServiceUtils {
                 ),
             )
 
-            private fun createIsMoveLegalLeftArguments(): Stream<out Arguments> = Stream.of(
+            private fun createIsMoveLegalLeftArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(4, 2, 0, 0),
@@ -410,7 +410,7 @@ open class MovementServiceUtils {
 
                 )
 
-            private fun createIsMoveLegalRightArguments(): Stream<out Arguments> = Stream.of(
+            private fun createIsMoveLegalRightArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
                     arrayOf(
                         intArrayOf(0, 0, 0, 0),

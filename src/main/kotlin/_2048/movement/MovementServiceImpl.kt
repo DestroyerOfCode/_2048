@@ -1,9 +1,11 @@
-package _2048
+package _2048.movement
 
-import _2048.Direction.DOWN
-import _2048.Direction.LEFT
-import _2048.Direction.RIGHT
-import _2048.Direction.UP
+import _2048.gameboard.Direction
+import _2048.gameboard.Direction.DOWN
+import _2048.gameboard.Direction.LEFT
+import _2048.gameboard.Direction.RIGHT
+import _2048.gameboard.Direction.UP
+import _2048.gameboard.GameBoard
 
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
     override fun shift(direction: Direction): Array<IntArray> {

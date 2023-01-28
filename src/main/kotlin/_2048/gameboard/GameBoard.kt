@@ -1,5 +1,6 @@
-package _2048
+package _2048.gameboard
 
+import _2048.IllegalPlayingBoardSizeException
 import kotlin.random.Random
 
 

@@ -1,4 +1,4 @@
-package _2048
+package _2048.gameboard
 
 enum class Direction(val keyboardButton: String) {
     UP("w"),

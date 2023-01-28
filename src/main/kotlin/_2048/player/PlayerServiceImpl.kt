@@ -1,5 +1,8 @@
-package _2048
+package _2048.player
 
+import _2048.IllegalMoveException
+import _2048.gameboard.Direction
+import _2048.gameboard.GameBoard
 import kotlin.random.Random
 
 class PlayerServiceImpl(

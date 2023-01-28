@@ -1,5 +1,8 @@
-package _2048
+package _2048.gameboard
 
+import _2048.IllegalMoveException
+import _2048.movement.MovementService
+import _2048.player.PlayerService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

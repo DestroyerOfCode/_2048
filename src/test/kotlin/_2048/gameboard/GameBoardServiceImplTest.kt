@@ -1,6 +1,11 @@
-package _2048
+package _2048.gameboard
 
-import _2048.Direction.UP
+import _2048.IllegalPlayingBoardSizeException
+import _2048.gameboard.Direction.UP
+import _2048.movement.MovementService
+import _2048.movement.MovementServiceImpl
+import _2048.player.PlayerService
+import _2048.player.PlayerServiceImpl
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -13,6 +18,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.doReturn
 import java.io.ByteArrayInputStream
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GameBoardServiceImplTest {
 
@@ -88,30 +94,43 @@ class GameBoardServiceImplTest {
     @Test
     fun whenInitWithZeroWidth_ThenThrowException() {
         //given and when
-        val ex: IllegalPlayingBoardSizeException = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
+        val ex = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
         { GameBoard(arrayOf(intArrayOf(1), intArrayOf())) }
 
         //then
+        assertTrue(
+            ex is IllegalPlayingBoardSizeException,
+            "Exception should be of type IllegalPlayingBoardSizeException!"
+        )
         assertEquals("You cannot pick an empty Row or Column!", ex.message)
     }
 
     @Test
     fun whenInitWithZeroHeight_ThenThrowException() {
         //given and when
-        val ex: IllegalPlayingBoardSizeException = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
+        val ex = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
         { GameBoard(arrayOf()) }
 
         //then
+        assertTrue(
+            ex is IllegalPlayingBoardSizeException,
+            "Exception should be of type IllegalPlayingBoardSizeException!"
+        )
         assertEquals("You cannot pick an empty Row or Column!", ex.message)
     }
 
     @Test
     fun whenInitWithUnevenSizes_ThenThrowException() {
         //given and when
-        val ex: IllegalPlayingBoardSizeException = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
+        val ex = Assertions.assertThrows(IllegalPlayingBoardSizeException::class.java)
         { GameBoard(arrayOf(intArrayOf(2, 2, 2, 2))) }
 
         //then
+        assertTrue(
+            ex is IllegalPlayingBoardSizeException,
+            "Exception should be of type IllegalPlayingBoardSizeException!"
+        )
+
         assertEquals("Height and Width of Playing Board must be indifferent!", ex.message)
     }
 

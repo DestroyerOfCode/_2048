@@ -1,4 +1,4 @@
-package _2048
+package _2048.gameboard
 
 interface GameBoardService {
 
