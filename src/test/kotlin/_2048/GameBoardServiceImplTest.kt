@@ -93,6 +93,7 @@ class GameBoardServiceImplTest {
         //then
         assertEquals("You cannot pick an empty Row or Column!", ex.message)
     }
+
     @Test
     fun whenInitWithZeroHeight_ThenThrowException() {
         //given and when
@@ -102,6 +103,7 @@ class GameBoardServiceImplTest {
         //then
         assertEquals("You cannot pick an empty Row or Column!", ex.message)
     }
+
     @Test
     fun whenInitWithUnevenSizes_ThenThrowException() {
         //given and when

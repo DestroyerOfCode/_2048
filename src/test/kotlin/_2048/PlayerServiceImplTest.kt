@@ -42,7 +42,6 @@ class PlayerServiceImplTest {
 
         //then
         assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 15")
-
     }
 
     @Test
@@ -79,8 +78,6 @@ class PlayerServiceImplTest {
 
         //then
         assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 10")
-
-
     }
 
     @Test
@@ -95,8 +92,7 @@ class PlayerServiceImplTest {
 
         //then
         Assertions.assertEquals(
-            "Invalid move b. Please use one of 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'",
-            illegalMoveException.message
+            "Invalid move b. Please use one of 'w', 's', 'a', 'd', 'W', 'S', 'A', 'D'", illegalMoveException.message
         )
     }
 
