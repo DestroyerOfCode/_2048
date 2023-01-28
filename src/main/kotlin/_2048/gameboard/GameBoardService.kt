@@ -1,7 +1,8 @@
 package _2048.gameboard
 
 interface GameBoardService {
-
-    fun printBoard()
+    /**
+     * Method to initialize the game
+     */
     fun playGame()
 }

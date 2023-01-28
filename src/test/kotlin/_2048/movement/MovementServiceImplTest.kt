@@ -42,13 +42,14 @@ class MovementServiceImplTest {
         givenPlayingArea: Array<IntArray>, outputPlayingArea: Array<IntArray>, direction: Direction
     ) {
         //given
-        movementService = MovementServiceImpl(GameBoard(givenPlayingArea))
+        val gameBoard: GameBoard = GameBoard(givenPlayingArea)
+        movementService = MovementServiceImpl(gameBoard)
 
         // when
-        val playingAreaRes: Array<IntArray> = movementService.shift(direction)
+        movementService.shift(direction)
 
         //then
-        assertTwoDimensionalArrays(outputPlayingArea, playingAreaRes)
+        assertTwoDimensionalArrays(outputPlayingArea, gameBoard.playingArea)
     }
 
     @ParameterizedTest

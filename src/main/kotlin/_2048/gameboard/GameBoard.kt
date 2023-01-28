@@ -1,8 +1,6 @@
 package _2048.gameboard
 
-import _2048.IllegalPlayingBoardSizeException
 import kotlin.random.Random
-
 
 class GameBoard(
     var playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
@@ -52,5 +50,4 @@ class GameBoard(
         val columnIndex = (0..playingArea[rowIndex].lastIndex).random()
         playingArea[(0..rowIndex).random()][columnIndex] = if (Random.nextBoolean()) 2 else 4
     }
-
 }

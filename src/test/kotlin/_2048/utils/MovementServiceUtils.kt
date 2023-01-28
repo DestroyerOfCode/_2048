@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.Arguments
 import java.util.stream.Stream
 
 open class MovementServiceTestUtils {
-
     class ShiftingMovements : MovementServiceTestUtils() {
         companion object {
             fun createVerticalShiftingArguments(): Stream<Arguments> = Stream.concat(
@@ -279,8 +278,6 @@ open class MovementServiceTestUtils {
                     ), RIGHT
                 ),
             )
-
-
         }
     }
 
@@ -327,7 +324,6 @@ open class MovementServiceTestUtils {
             fun createVerticalIsMoveLegalArguments(): Stream<Arguments> = Stream.concat(
                 createIsMoveLegalUpArguments(),
                 createIsMoveLegalDownArguments(),
-
                 )
 
             private fun createIsMoveLegalUpArguments(): Stream<Arguments> = Stream.of(
@@ -407,7 +403,6 @@ open class MovementServiceTestUtils {
                     LEFT,
                     false
                 ),
-
                 )
 
             private fun createIsMoveLegalRightArguments(): Stream<Arguments> = Stream.of(
@@ -432,7 +427,6 @@ open class MovementServiceTestUtils {
                     false
                 ),
             )
-
         }
     }
 }

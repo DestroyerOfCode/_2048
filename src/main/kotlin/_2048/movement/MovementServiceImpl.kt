@@ -8,20 +8,6 @@ import _2048.gameboard.Direction.UP
 import _2048.gameboard.GameBoard
 
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
-    override fun shift(direction: Direction): Array<IntArray> {
-        return when (direction) {
-            UP -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea)))
-            //transposing and reversing twice because I need to return the original board
-            DOWN -> transposeFromRowToColumn(shift(transposeFromRowToColumn(gameBoard.playingArea).map { it.reversedArray() }
-                .toTypedArray())).reversedArray()
-
-            LEFT -> shift(gameBoard.playingArea)
-            //reversing twice because I need to return the original board
-            RIGHT -> shift(gameBoard.playingArea.map { it.reversedArray() }
-                .toTypedArray()).map { it.reversedArray() }.toTypedArray()
-        }
-    }
-
     override fun canMakeMove(): Boolean {
         return isPlayingAreaNotFull() or Direction.values().any { direction -> isMoveLegal(direction) }
     }
@@ -29,12 +15,39 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
     override fun isMoveLegal(direction: Direction): Boolean {
         return when (direction) {
             UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
-            DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }
-                .toTypedArray()))
-
+            DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
             LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
             RIGHT -> canShift(gameBoard.playingArea)
         }
+    }
+
+    override fun shift(direction: Direction) {
+        when (direction) {
+            UP -> shiftUpMirrorImageAndRevertBack()
+            DOWN -> shiftDownMirrorImageAndRevertBack()
+            LEFT -> shiftLeft()
+            RIGHT -> shiftRightMirrorImageAndRevertBack()
+        }
+    }
+
+    private fun shiftLeft() {
+        gameBoard.playingArea = shift(gameBoard.playingArea)
+    }
+    //reversing twice because I need to return the original board
+    private fun shiftRightMirrorImageAndRevertBack() {
+        val shiftedPlayingArea: Array<IntArray> = shift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
+        gameBoard.playingArea = shiftedPlayingArea.map { it.reversedArray() }.toTypedArray()
+    }
+
+    private fun shiftUpMirrorImageAndRevertBack() {
+        val shiftedPlayingArea: Array<IntArray> = shift(transposeFromRowToColumn(gameBoard.playingArea))
+        gameBoard.playingArea = transposeFromRowToColumn(shiftedPlayingArea)
+    }
+    //transposing and reversing twice because I need to return the original board
+    private fun shiftDownMirrorImageAndRevertBack() {
+        val shiftedPlayingArea: Array<IntArray> =
+            shift(transposeFromRowToColumn(gameBoard.playingArea).map { it.reversedArray() }.toTypedArray())
+        gameBoard.playingArea = transposeFromRowToColumn(shiftedPlayingArea).reversedArray()
     }
 
     private fun canCompactTiles(i: Int, row: IntArray): Boolean {
@@ -60,7 +73,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
 
     private fun canShift(row: IntArray): Boolean {
         for (i in row.lastIndex downTo 1) {
-            if (isRowEmpty(row, i)) { //this is for compacting tiles
+            if (isRowEmpty(row, i)) {
                 if (canCompactTiles(i, row)) {
                     return true
                 }
@@ -77,6 +90,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         compactTiles(playingArea)
         mergeTiles(playingArea)
         compactTiles(playingArea)
+        gameBoard.playingArea = playingArea
         return playingArea
     }
 
@@ -119,7 +133,6 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
                     } else if (areTilesNonZeroAndDifferent(playingArea[indexRow][column2], tile)) {
                         break
                     }
-
                 }
             }
         }
@@ -137,14 +150,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         return transposedPlayingArea
     }
 
-    private fun isPlayingAreaNotFull(): Boolean {
-        return gameBoard.playingArea.any { row -> row.contains(0) }
-    }
-
+    private fun isPlayingAreaNotFull(): Boolean = gameBoard.playingArea.any { row -> row.contains(0) }
     private fun isRowEmpty(row: IntArray, i: Int) = 0 == row[i]
-
-    private fun areTilesNonZeroAndDifferent(tile1: Int, tile2: Int): Boolean {
-        return 0 != tile1 && tile1 != tile2
-    }
-
+    private fun areTilesNonZeroAndDifferent(tile1: Int, tile2: Int): Boolean = 0 != tile1 && tile1 != tile2
 }

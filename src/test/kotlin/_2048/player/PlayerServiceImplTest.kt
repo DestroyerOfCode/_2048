@@ -1,6 +1,6 @@
 package _2048.player
 
-import _2048.IllegalMoveException
+import _2048.movement.IllegalMoveException
 import _2048.gameboard.Direction
 import _2048.gameboard.Direction.UP
 import _2048.gameboard.GameBoard
@@ -16,36 +16,36 @@ class PlayerServiceImplTest {
     fun whenAddNewTileToEmptyBoard_ThenGameBoardSizeIncrementsToOne() {
         //given
         val wantedNumberOfNonZeroTiles = intArrayOf(2, 3)
-        playerService = PlayerServiceImpl(GameBoard())
+        val gameBoard = GameBoard()
+        playerService = PlayerServiceImpl(gameBoard)
 
         //when
-        val boardRes: GameBoard = playerService.addNewTile()
+        playerService.addNewTile()
 
         //then
-        assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 1")
+        assertTrue(countNonEmptyTiles(gameBoard.playingArea, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 1")
     }
 
     @Test
     fun whenAddNewTileToFilledPlayingArea_ThenGameBoardSizeIncrementsByOne() {
         //given
         val wantedNumberOfNonZeroTiles = intArrayOf(15)
-        playerService = PlayerServiceImpl(
-            GameBoard(
-                arrayOf(
-                    intArrayOf(2, 0, 2, 2, 2),
-                    intArrayOf(0, 0, 2, 2, 0),
-                    intArrayOf(2, 2, 2, 2, 2),
-                    intArrayOf(2, 0, 2, 2, 0),
-                    intArrayOf(0, 0, 0, 0, 0)
-                )
+        val playingArea =
+            arrayOf(
+                intArrayOf(2, 0, 2, 2, 2),
+                intArrayOf(0, 0, 2, 2, 0),
+                intArrayOf(2, 2, 2, 2, 2),
+                intArrayOf(2, 0, 2, 2, 0),
+                intArrayOf(0, 0, 0, 0, 0)
             )
-        )
+        val gameBoard = GameBoard(playingArea)
+        playerService = PlayerServiceImpl(gameBoard)
 
         //when
-        val boardRes: GameBoard = playerService.addNewTile()
+        playerService.addNewTile()
 
         //then
-        assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 15")
+        assertTrue(countNonEmptyTiles(gameBoard.playingArea, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 15")
     }
 
     @Test
@@ -65,23 +65,22 @@ class PlayerServiceImplTest {
     fun whenAddNewTileToFullPlayingArea_ThenGameBoardSizeRemainsSame() {
         //given
         val wantedNumberOfNonZeroTiles = intArrayOf(16)
-        playerService = PlayerServiceImpl(
-            GameBoard(
-                arrayOf(
-                    intArrayOf(2, 2, 2, 2, 2),
-                    intArrayOf(2, 2, 2),
-                    intArrayOf(2, 2, 2, 2),
-                    intArrayOf(2, 2, 2),
-                    intArrayOf(2)
-                )
+        val playingArea =
+            arrayOf(
+                intArrayOf(2, 2, 2, 2, 2),
+                intArrayOf(2, 2, 2),
+                intArrayOf(2, 2, 2, 2),
+                intArrayOf(2, 2, 2),
+                intArrayOf(2)
             )
-        )
+        val gameBoard = GameBoard(playingArea)
+        playerService = PlayerServiceImpl(gameBoard)
 
         //when
-        val boardRes: GameBoard = playerService.addNewTile()
+        playerService.addNewTile()
 
         //then
-        assertTrue(countNonEmptyTiles(boardRes, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 10")
+        assertTrue(countNonEmptyTiles(gameBoard.playingArea, wantedNumberOfNonZeroTiles), "Number of non-zero tiles should be 10")
     }
 
     @Test
@@ -100,10 +99,10 @@ class PlayerServiceImplTest {
         )
     }
 
-    private fun countNonEmptyTiles(boardRes: GameBoard, wantedNumberOfNonZeroTiles: IntArray): () -> Boolean {
+    private fun countNonEmptyTiles(playingArea: Array<IntArray>, wantedNumberOfNonZeroTiles: IntArray): () -> Boolean {
         var numberOfNonZeroTiles = 0
         return {
-            boardRes.playingArea.forEach { row ->
+            playingArea.forEach { row ->
                 row.forEach {
                     if (it in intArrayOf(2, 4)) ++numberOfNonZeroTiles
                 }

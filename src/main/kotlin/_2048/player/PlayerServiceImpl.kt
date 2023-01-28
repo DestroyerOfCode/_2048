@@ -1,26 +1,24 @@
 package _2048.player
 
-import _2048.IllegalMoveException
 import _2048.gameboard.Direction
 import _2048.gameboard.GameBoard
+import _2048.movement.IllegalMoveException
+import java.util.Objects.isNull
 import kotlin.random.Random
 
 class PlayerServiceImpl(
     private val gameBoard: GameBoard,
 ) : PlayerService {
-
     companion object {
         val validMoves = listOf("w", "s", "a", "d", "W", "S", "A", "D")
     }
 
-    override fun addNewTile(): GameBoard {
+    override fun addNewTile() {
         val freeTiles: MutableMap<Int, MutableList<Int>> = HashMap()
 
         findFreeTiles(freeTiles)
 
         addTileToRandomFreeSpot(freeTiles)
-
-        return gameBoard
     }
 
     override fun getDirectionOfShift(move: String): Direction? {
@@ -35,7 +33,6 @@ class PlayerServiceImpl(
         }
     }
 
-
     private fun findFreeTiles(freeTiles: MutableMap<Int, MutableList<Int>>) {
         gameBoard.playingArea.forEachIndexed { indexRow, row ->
             row.forEachIndexed columnLoop@{ indexColumn, tile ->
@@ -43,7 +40,7 @@ class PlayerServiceImpl(
                     return@columnLoop
                 }
 
-                if (freeTiles[indexRow] == null) {
+                if (isNull(freeTiles[indexRow])) {
                     freeTiles[indexRow] = mutableListOf(indexColumn)
                     return@columnLoop
                 }

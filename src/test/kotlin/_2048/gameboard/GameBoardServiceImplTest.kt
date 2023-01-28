@@ -1,6 +1,5 @@
 package _2048.gameboard
 
-import _2048.IllegalPlayingBoardSizeException
 import _2048.gameboard.Direction.UP
 import _2048.movement.MovementService
 import _2048.movement.MovementServiceImpl
@@ -23,9 +22,9 @@ import kotlin.test.assertTrue
 class GameBoardServiceImplTest {
 
     private lateinit var gameBoardService: GameBoardServiceImpl
-    private var playerService: PlayerService = Mockito.mock(PlayerServiceImpl::class.java)
-    private var movementService: MovementService = Mockito.mock(MovementServiceImpl::class.java)
     private lateinit var testIn: ByteArrayInputStream
+    private var movementService: MovementService = Mockito.mock(MovementServiceImpl::class.java)
+    private var playerService: PlayerService = Mockito.mock(PlayerServiceImpl::class.java)
 
     @Test
     fun whenPlayGameAndMakeIllegalMove_ThenThrowsException() {
@@ -40,9 +39,7 @@ class GameBoardServiceImplTest {
 
         //then
         verify(playerService, never()).addNewTile()
-        Direction.values().forEach { direction: Direction ->
-            verify(movementService, never()).shift(direction)
-        }
+        isShiftInAnyDirectionEverCalled()
 
     }
 
@@ -65,10 +62,7 @@ class GameBoardServiceImplTest {
 
         //then
         verify(playerService, never()).addNewTile()
-//        verify(movementService, never()).shift(any(Direction::class.java))
-        Direction.values().forEach { direction: Direction ->
-            verify(movementService, never()).shift(direction)
-        }
+        isShiftInAnyDirectionEverCalled()
 
     }
 
@@ -79,7 +73,6 @@ class GameBoardServiceImplTest {
         given(playerService.getDirectionOfShift("w")).willReturn(UP)
         given(movementService.canMakeMove()).willReturn(true, false)
         doReturn(true).`when`(movementService).isMoveLegal(UP)
-        doReturn(arrayOf(intArrayOf())).`when`(movementService).shift(UP)
         provideInput("w")
 
         //when
@@ -142,5 +135,11 @@ class GameBoardServiceImplTest {
     private fun provideInput(input: String) {
         testIn = ByteArrayInputStream(input.toByteArray())
         System.setIn(testIn)
+    }
+
+    private fun isShiftInAnyDirectionEverCalled() {
+        Direction.values().forEach { direction: Direction ->
+            verify(movementService, never()).shift(direction)
+        }
     }
 }
