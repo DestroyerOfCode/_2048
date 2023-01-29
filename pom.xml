@@ -17,7 +17,7 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
-        <jetbrains.kotlin.version>1.7.21</jetbrains.kotlin.version>
+        <jetbrains.kotlin.version>1.8.0</jetbrains.kotlin.version>
         <org.mockito.version>5.0.0</org.mockito.version>
         <org.slf4j.version>2.0.6</org.slf4j.version>
         <org.junit.jupiter.version>5.9.2</org.junit.jupiter.version>
@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.7.21</version>
+                <version>${jetbrains.kotlin.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -107,6 +107,12 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${org.slf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${org.slf4j.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -147,10 +153,7 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-reload4j</artifactId>
-            <version>${org.slf4j.version}</version>
-            <type>pom</type>
-            <scope>test</scope>
+            <artifactId>slf4j-simple</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

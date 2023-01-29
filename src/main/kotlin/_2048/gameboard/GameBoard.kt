@@ -1,5 +1,7 @@
 package _2048.gameboard
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import kotlin.random.Random
 
 class GameBoard(
@@ -9,14 +11,17 @@ class GameBoard(
     companion object {
         const val BOX_HEIGHT = 4
         const val BOX_WIDTH = 4
+        private val LOGGER: Logger = LoggerFactory.getLogger(GameBoard::class.java)
     }
 
     init {
         if (playingArea.isEmpty() || playingArea.any { it.isEmpty() }) {
+            LOGGER.error("Invalid Size of Playing Board selected!")
             throw IllegalPlayingBoardSizeException("You cannot pick an empty Row or Column!")
         }
 
         if (playingArea.size != playingArea[0].size) {
+            LOGGER.error("Invalid Size of Playing Board selected!")
             throw IllegalPlayingBoardSizeException("Height and Width of Playing Board must be indifferent!")
         }
 
