@@ -4,5 +4,7 @@ interface GameBoardService {
     /**
      * Method to initialize the game
      */
-    fun playGame()
+    suspend fun playGame()
+    fun  playRound(direction: Direction)
+    fun chooseDirection(direction: Direction)
 }
