@@ -5,7 +5,8 @@
 plugins {
     `java-library`
     `maven-publish`
-    kotlin("jvm") version "1.8.10" // Kotlin version to use
+    kotlin("jvm") version "1.8.0" // Kotlin version to use
+    id("org.jetbrains.compose") version "1.3.0"
 }
 
 repositories {
@@ -18,6 +19,8 @@ repositories {
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 dependencies {
@@ -32,12 +35,19 @@ dependencies {
         exclude(group = "org.junit.jupiter", module = "junit-jupiter-api")
         exclude(group = "org.junit.jupiter", module = "junit-jupiter-engine")
     }
+    implementation(compose.desktop.currentOs)
+}
+
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+    }
 }
 
 group = "main"
 version = "1.0-SNAPSHOT"
 description = "consoleApp"
-java.sourceCompatibility = JavaVersion.VERSION_18
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 
 publishing {
