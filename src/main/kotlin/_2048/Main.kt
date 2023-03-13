@@ -24,9 +24,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.singleWindowApplication
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 @OptIn(DelicateCoroutinesApi::class)
 fun main() = singleWindowApplication(title = "2048", icon = ColorPainter(Color.Cyan)) {
@@ -39,10 +37,9 @@ fun main() = singleWindowApplication(title = "2048", icon = ColorPainter(Color.C
         GameBoardServiceImpl(
             gameBoard = gameBoard,
             playerService = playerService,
-            movementService = movementService,
-            gameBoardView
+            movementService = movementService
         )
-    val job = GlobalScope.launch {
+    CoroutineScope(Dispatchers.Default).launch {
         gameBoardService.playGame()
     }
 

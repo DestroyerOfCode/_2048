@@ -1,5 +1,6 @@
 package _2048
 
+import _2048.gameboard.Direction
 import _2048.gameboard.GameBoard
 import _2048.movement.MovementService
 import _2048.player.PlayerService
@@ -18,7 +19,7 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.Dp
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 class GameBoardView(
     private val gameBoard: GameBoard,
@@ -46,8 +47,9 @@ class GameBoardView(
 
         val gameBoardBox: MutableState<Array<IntArray>> = mutableStateOf(gameBoard.playingArea)
 
-        Row(Modifier.focusable()
-            .onKeyEvent(onKeyPressed(gameBoardBox))
+        Row(
+            Modifier.focusable()
+                .onKeyEvent(onKeyPressed(gameBoardBox))
         ) {
             repeat(4) { column ->
                 Column {
@@ -76,25 +78,35 @@ class GameBoardView(
 
             if (it.key == Key.W) {
 //                gameBoardService.chooseDirection(Direction.UP)
-    //                    gameBoardService.playRound(Direction.UP)
-                gameBoardBox.value = gameBoard.playingArea
+                //                    gameBoardService.playRound(Direction.UP)
+                runBlocking {
+                    gameBoard.currentMovement = Direction.UP
+                    GameBoard.deferredMovement.complete(gameBoard.currentMovement)
+//                    gameBoard.currentMovement = Direction.NONE
+//                    GameBoard.deferredMovement.complete(gameBoard.currentMovement)
+                    gameBoardBox.value = gameBoard.playingArea
+                }
                 true
             }
-    //                if (it.key == Key.S) {
-    //                    gameBoardService.playRound(Direction.DOWN)
-    //                    gameBoardBox.value = gameBoard.playingArea
-    //                    true
-    //                }
-    //                if (it.key == Key.A) {
-    //                    gameBoardService.playRound(Direction.LEFT)
-    //                    gameBoardBox.value = gameBoard.playingArea
-    //                    true
-    //                }
-    //                if (it.key == Key.D) {
-    //                    gameBoardService.playRound(Direction.RIGHT)
-    //                    gameBoardBox.value = gameBoard.playingArea
-    //                    true
-    //                }
+            if (it.key == Key.S) {
+
+                CoroutineScope(Dispatchers.Default).launch {
+                    gameBoard.currentMovement = Direction.DOWN
+                    yield()
+                    gameBoardBox.value = gameBoard.playingArea
+                }
+                true
+            }
+            //                if (it.key == Key.A) {
+            //                    gameBoardService.playRound(Direction.LEFT)
+            //                    gameBoardBox.value = gameBoard.playingArea
+            //                    true
+            //                }
+            //                if (it.key == Key.D) {
+            //                    gameBoardService.playRound(Direction.RIGHT)
+            //                    gameBoardBox.value = gameBoard.playingArea
+            //                    true
+            //                }
             false
 
         }

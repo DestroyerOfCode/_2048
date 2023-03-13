@@ -3,6 +3,7 @@ package _2048.movement
 import _2048.gameboard.Direction
 import _2048.gameboard.Direction.DOWN
 import _2048.gameboard.Direction.LEFT
+import _2048.gameboard.Direction.NONE
 import _2048.gameboard.Direction.RIGHT
 import _2048.gameboard.Direction.UP
 import _2048.gameboard.GameBoard
@@ -18,6 +19,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
             DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
             LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
             RIGHT -> canShift(gameBoard.playingArea)
+            NONE -> true
         }
     }
 
@@ -27,6 +29,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
             DOWN -> shiftDownMirrorImageAndRevertBack()
             LEFT -> shiftLeft()
             RIGHT -> shiftRightMirrorImageAndRevertBack()
+            NONE -> {}
         }
     }
 

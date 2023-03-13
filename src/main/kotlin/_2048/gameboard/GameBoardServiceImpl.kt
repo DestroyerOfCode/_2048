@@ -1,11 +1,12 @@
 package _2048.gameboard
 
-import _2048.GameBoardView
 import _2048.movement.IllegalMoveException
 import _2048.movement.MovementService
 import _2048.player.PlayerService
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -13,7 +14,6 @@ class GameBoardServiceImpl(
     private val gameBoard: GameBoard = GameBoard(),
     private val playerService: PlayerService,
     private val movementService: MovementService,
-    private val gameBoardView: GameBoardView,
 ) : GameBoardService {
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardServiceImpl::class.java)
@@ -23,7 +23,12 @@ class GameBoardServiceImpl(
         gameLoop@ while (movementService.canMakeMove()) {
             try {
                 val direction: Direction = withContext(Dispatchers.Default) {
-                    Direction.DOWN
+                    if (Direction.NONE == gameBoard.currentMovement) {
+                        yield()
+                    }
+                    GameBoard.deferredMovement.await()
+                    GameBoard.deferredMovement = CompletableDeferred()
+                    gameBoard.currentMovement
                 }
 //                    chooseDirectionToShift()
                 //when making a move that would change no position of tiles
@@ -61,6 +66,7 @@ class GameBoardServiceImpl(
     override fun chooseDirection(direction: Direction) {
         direction
     }
+
     private fun chooseDirectionToShift(): Direction {
         val directionString: String = readln()
         val direction: Direction? = playerService.getDirectionOfShift(directionString)
