@@ -1,16 +1,14 @@
 package _2048.movement
 
 import _2048.gameboard.Direction
-import _2048.gameboard.Direction.DOWN
-import _2048.gameboard.Direction.LEFT
-import _2048.gameboard.Direction.NONE
-import _2048.gameboard.Direction.RIGHT
-import _2048.gameboard.Direction.UP
+import _2048.gameboard.Direction.*
 import _2048.gameboard.GameBoard
+import kotlinx.coroutines.channels.Channel
 
-class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
+class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementChannel = Channel())) : MovementService {
     override fun canMakeMove(): Boolean {
-        return isPlayingAreaNotFull() or Direction.values().any { direction -> isMoveLegal(direction) }
+        return isPlayingAreaNotFull() or Direction.values().filter { it != NONE }
+            .any { direction -> isMoveLegal(direction) }
     }
 
     override fun isMoveLegal(direction: Direction): Boolean {
@@ -19,7 +17,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
             DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
             LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
             RIGHT -> canShift(gameBoard.playingArea)
-            NONE -> true
+            NONE -> false
         }
     }
 
@@ -36,6 +34,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
     private fun shiftLeft() {
         gameBoard.playingArea = shift(gameBoard.playingArea)
     }
+
     //reversing twice because I need to return the original board
     private fun shiftRightMirrorImageAndRevertBack() {
         val shiftedPlayingArea: Array<IntArray> = shift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
@@ -46,6 +45,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         val shiftedPlayingArea: Array<IntArray> = shift(transposeFromRowToColumn(gameBoard.playingArea))
         gameBoard.playingArea = transposeFromRowToColumn(shiftedPlayingArea)
     }
+
     //transposing and reversing twice because I need to return the original board
     private fun shiftDownMirrorImageAndRevertBack() {
         val shiftedPlayingArea: Array<IntArray> =
@@ -93,7 +93,6 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : Move
         compactTiles(playingArea)
         mergeTiles(playingArea)
         compactTiles(playingArea)
-        gameBoard.playingArea = playingArea
         return playingArea
     }
 

@@ -2,8 +2,6 @@ package _2048
 
 import _2048.gameboard.Direction
 import _2048.gameboard.GameBoard
-import _2048.movement.MovementService
-import _2048.player.PlayerService
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
@@ -20,13 +18,17 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class GameBoardView(
     private val gameBoard: GameBoard,
-    private val movementService: MovementService,
-    val playerService: PlayerService,
-//    val gameBoardService: GameBoardService,
 ) {
+
+    companion object {
+        private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardView::class.java)
+    }
+
     @Composable
     fun tile(color: Color, value: Int) =
         Box(modifier = Modifier.size(Dp(100F), Dp(100F)).border(Dp(2f), Color.Black).background(color)) {
@@ -76,38 +78,31 @@ class GameBoardView(
     fun onKeyPressed(gameBoardBox: MutableState<Array<IntArray>>): (KeyEvent) -> Boolean =
         {
 
-            if (it.key == Key.W) {
-//                gameBoardService.chooseDirection(Direction.UP)
-                //                    gameBoardService.playRound(Direction.UP)
-                runBlocking {
-                    gameBoard.currentMovement = Direction.UP
-                    GameBoard.deferredMovement.complete(gameBoard.currentMovement)
-//                    gameBoard.currentMovement = Direction.NONE
-//                    GameBoard.deferredMovement.complete(gameBoard.currentMovement)
-                    gameBoardBox.value = gameBoard.playingArea
+            when (it.key) {
+                Key.DirectionUp -> shiftAndRender(gameBoardBox, Direction.UP)
+                Key.DirectionDown -> shiftAndRender(gameBoardBox, Direction.DOWN)
+                Key.DirectionLeft -> shiftAndRender(gameBoardBox, Direction.LEFT)
+                Key.DirectionRight -> shiftAndRender(gameBoardBox, Direction.RIGHT)
+                else -> {
+                    true
                 }
-                true
             }
-            if (it.key == Key.S) {
-
-                CoroutineScope(Dispatchers.Default).launch {
-                    gameBoard.currentMovement = Direction.DOWN
-                    yield()
-                    gameBoardBox.value = gameBoard.playingArea
-                }
-                true
-            }
-            //                if (it.key == Key.A) {
-            //                    gameBoardService.playRound(Direction.LEFT)
-            //                    gameBoardBox.value = gameBoard.playingArea
-            //                    true
-            //                }
-            //                if (it.key == Key.D) {
-            //                    gameBoardService.playRound(Direction.RIGHT)
-            //                    gameBoardBox.value = gameBoard.playingArea
-            //                    true
-            //                }
-            false
 
         }
+
+    private fun shiftAndRender(gameBoardBox: MutableState<Array<IntArray>>, direction: Direction): Boolean {
+        var isMoved: Boolean = false
+        runBlocking {
+            try {
+                gameBoard.movementChannel.send(direction)
+                isMoved = gameBoard.isMovedChannel.receive()
+                if (isMoved) {
+                    gameBoardBox.value = gameBoard.playingArea
+                }
+            } catch (ex: CancellationException) {
+                LOGGER.error("Exception thrown when receiving channel ${ex.message}")
+            }
+        }
+        return isMoved
+    }
 }

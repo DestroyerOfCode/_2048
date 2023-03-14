@@ -27,7 +27,7 @@ class GameBoardServiceImplTest {
     private var playerService: PlayerService = Mockito.mock(PlayerServiceImpl::class.java)
 
     @Test
-    fun whenPlayGameAndMakeIllegalMove_ThenThrowsException() {
+    suspend fun whenPlayGameAndMakeIllegalMove_ThenThrowsException() {
         //given
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
         given(movementService.canMakeMove()).willReturn(true, false)
@@ -44,7 +44,7 @@ class GameBoardServiceImplTest {
     }
 
     @Test
-    fun whenPlayGameAndMakeInvalidMove_ThenContinueGameLoop() {
+    suspend fun whenPlayGameAndMakeInvalidMove_ThenContinueGameLoop() {
         //given
         val playingBoard = arrayOf(
             intArrayOf(2, 8, 0, 0),
@@ -67,7 +67,7 @@ class GameBoardServiceImplTest {
     }
 
     @Test
-    fun whenPlayGameAndMakeValidMove_ThenCallShiftAndAddNewTile() {
+    suspend fun whenPlayGameAndMakeValidMove_ThenCallShiftAndAddNewTile() {
         //given
         gameBoardService = GameBoardServiceImpl(GameBoard(), playerService, movementService)
         given(playerService.getDirectionOfShift("w")).willReturn(UP)

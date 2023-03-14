@@ -1,9 +1,6 @@
 package _2048.utils
 
-import _2048.gameboard.Direction.DOWN
-import _2048.gameboard.Direction.LEFT
-import _2048.gameboard.Direction.RIGHT
-import _2048.gameboard.Direction.UP
+import _2048.gameboard.Direction.*
 import org.junit.jupiter.params.provider.Arguments
 import java.util.stream.Stream
 
@@ -301,7 +298,17 @@ open class MovementServiceTestUtils {
                         intArrayOf(2, 8, 2, 16)
                     ),
                     true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(2, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0)
+                    ),
+                    true
                 )
+
             )
 
             fun createMakeMoveFalseArguments(): Stream<Arguments> = Stream.of(
@@ -324,7 +331,7 @@ open class MovementServiceTestUtils {
             fun createVerticalIsMoveLegalArguments(): Stream<Arguments> = Stream.concat(
                 createIsMoveLegalUpArguments(),
                 createIsMoveLegalDownArguments(),
-                )
+            )
 
             private fun createIsMoveLegalUpArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
@@ -395,6 +402,106 @@ open class MovementServiceTestUtils {
                 ),
                 Arguments.of(
                     arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(2, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0)
+                    ),
+                    LEFT,
+                    false
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 2),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 2)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 2, 0, 0)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(2, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0)
+                    ),
+                    LEFT,
+                    false
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(2, 0, 0, 0)
+                    ),
+                    LEFT,
+                    false
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 2),
+                        intArrayOf(2, 2, 2, 8)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 2, 4, 16)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 4, 16)
+                    ),
+                    LEFT,
+                    true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 4, 8, 32),
+                        intArrayOf(2, 8, 4, 16)
+                    ),
+                    LEFT,
+                    false
+                ),
+                Arguments.of(
+                    arrayOf(
                         intArrayOf(2, 4, 2, 0),
                         intArrayOf(2, 4, 2, 0),
                         intArrayOf(4, 0, 0, 0),
@@ -403,7 +510,7 @@ open class MovementServiceTestUtils {
                     LEFT,
                     false
                 ),
-                )
+            )
 
             private fun createIsMoveLegalRightArguments(): Stream<Arguments> = Stream.of(
                 Arguments.of(
@@ -425,6 +532,36 @@ open class MovementServiceTestUtils {
                     ),
                     RIGHT,
                     false
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(2, 2, 4, 8)
+                    ),
+                    RIGHT,
+                    true
+                ),
+            Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 2, 2, 8),
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(0, 2, 4, 8)
+                    ),
+                    RIGHT,
+                    true
+                ),
+            Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 2, 0, 2),
+                        intArrayOf(0, 2, 4, 2),
+                        intArrayOf(0, 2, 4, 8),
+                        intArrayOf(0, 2, 4, 8)
+                    ),
+                    RIGHT,
+                    true
                 ),
             )
         }

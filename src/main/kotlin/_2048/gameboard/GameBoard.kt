@@ -1,7 +1,6 @@
 package _2048.gameboard
 
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.channels.Channel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.random.Random
@@ -9,12 +8,17 @@ import kotlin.random.Random
 class GameBoard(
     var playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
     var score: Int = 0,
-    var currentMovement: Direction = Direction.NONE,
+    val movementChannel: Channel<Direction> = Channel(
+        capacity = Channel.UNLIMITED,
+        onUndeliveredElement = { LOGGER.error("Undelivered message $this") }),
+    val isMovedChannel: Channel<Boolean> = Channel(
+        capacity = Channel.UNLIMITED,
+        onUndeliveredElement = { LOGGER.error("Undelivered message $this") })
 ) {
+
     companion object {
         const val BOX_HEIGHT = 4
         const val BOX_WIDTH = 4
-        var deferredMovement: CompletableDeferred<Direction> = CompletableDeferred()
         private val LOGGER: Logger = LoggerFactory.getLogger(GameBoard::class.java)
     }
 

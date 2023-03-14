@@ -3,15 +3,15 @@ package _2048.gameboard
 import _2048.movement.IllegalMoveException
 import _2048.movement.MovementService
 import _2048.player.PlayerService
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class GameBoardServiceImpl(
-    private val gameBoard: GameBoard = GameBoard(),
+    private val gameBoard: GameBoard = GameBoard(movementChannel = Channel()),
     private val playerService: PlayerService,
     private val movementService: MovementService,
 ) : GameBoardService {
@@ -22,24 +22,22 @@ class GameBoardServiceImpl(
     override suspend fun playGame() {
         gameLoop@ while (movementService.canMakeMove()) {
             try {
-                val direction: Direction = withContext(Dispatchers.Default) {
-                    if (Direction.NONE == gameBoard.currentMovement) {
-                        yield()
-                    }
-                    GameBoard.deferredMovement.await()
-                    GameBoard.deferredMovement = CompletableDeferred()
-                    gameBoard.currentMovement
-                }
-//                    chooseDirectionToShift()
+                val direction: Direction = gameBoard.movementChannel.receive()
+
                 //when making a move that would change no position of tiles
                 if (!movementService.isMoveLegal(direction)) {
+                    gameBoard.isMovedChannel.send(false)
                     continue@gameLoop
                 }
                 //both players movement
                 playRound(direction)
+                gameBoard.isMovedChannel.send(true)
             } catch (ex: IllegalMoveException) {
                 LOGGER.error(ex.message)
+            } catch (ex: ClosedReceiveChannelException) {
+                LOGGER.error("Error on channel: ${ex.message}")
             }
+
         }
     }
 
@@ -59,8 +57,8 @@ class GameBoardServiceImpl(
     override fun playRound(direction: Direction) {
         movementService.shift(direction)
         playerService.addNewTile()
-        printBoard()
-        println(gameBoard.score)
+//        printBoard()
+//        println(gameBoard.score)
     }
 
     override fun chooseDirection(direction: Direction) {

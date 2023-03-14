@@ -25,6 +25,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.singleWindowApplication
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 
 @OptIn(DelicateCoroutinesApi::class)
 fun main() = singleWindowApplication(title = "2048", icon = ColorPainter(Color.Cyan)) {
@@ -32,7 +33,7 @@ fun main() = singleWindowApplication(title = "2048", icon = ColorPainter(Color.C
     val gameBoard = GameBoard()
     val movementService: MovementService = MovementServiceImpl(gameBoard)
     val playerService: PlayerService = PlayerServiceImpl(gameBoard)
-    val gameBoardView = GameBoardView(gameBoard, movementService, playerService)
+    val gameBoardView = GameBoardView(gameBoard)
     val gameBoardService: GameBoardService =
         GameBoardServiceImpl(
             gameBoard = gameBoard,
