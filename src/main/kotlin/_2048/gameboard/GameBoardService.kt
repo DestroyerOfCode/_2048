@@ -6,5 +6,4 @@ interface GameBoardService {
      */
     suspend fun playGame()
     fun  playRound(direction: Direction)
-    fun chooseDirection(direction: Direction)
 }

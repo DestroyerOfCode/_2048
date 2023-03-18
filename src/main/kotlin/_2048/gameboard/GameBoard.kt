@@ -11,9 +11,7 @@ class GameBoard(
     val movementChannel: Channel<Direction> = Channel(
         capacity = Channel.UNLIMITED,
         onUndeliveredElement = { LOGGER.error("Undelivered message $this") }),
-    val isMovedChannel: Channel<Boolean> = Channel(
-        capacity = Channel.UNLIMITED,
-        onUndeliveredElement = { LOGGER.error("Undelivered message $this") })
+    val playingAreaChannel: Channel<Array<IntArray>> = Channel(capacity = Channel.UNLIMITED)
 ) {
 
     companion object {

@@ -5,5 +5,4 @@ enum class Direction(val keyboardButton: String) {
     DOWN("s"),
     LEFT("a"),
     RIGHT("d"),
-    NONE("")
 }

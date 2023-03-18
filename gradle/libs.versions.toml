@@ -1,6 +1,7 @@
 [versions]
 org-mockito = "5.0.0"
 org-slf4j = "2.0.6"
+org-log4j = "2.20.0"
 org-junit-jupiter = "5.9.2"
 kotlin-compiler = "1.8"
 jetbrains-kotlin = "1.8.0"
@@ -10,5 +11,6 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", v
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "org.junit.jupiter" }
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "org.slf4j" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "org.slf4j" }
+log4j-core = {group = "org.apache.logging.log4j", name = "log4j-core", version.ref = "org.log4j"}
 kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "jetbrains.kotlin" }
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "org.mockito" }

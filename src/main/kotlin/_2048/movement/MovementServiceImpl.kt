@@ -1,5 +1,4 @@
 package _2048.movement
-
 import _2048.gameboard.Direction
 import _2048.gameboard.Direction.*
 import _2048.gameboard.GameBoard
@@ -7,7 +6,7 @@ import kotlinx.coroutines.channels.Channel
 
 class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementChannel = Channel())) : MovementService {
     override fun canMakeMove(): Boolean {
-        return isPlayingAreaNotFull() or Direction.values().filter { it != NONE }
+        return isPlayingAreaNotFull() or Direction.values()
             .any { direction -> isMoveLegal(direction) }
     }
 
@@ -17,7 +16,6 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
             DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
             LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
             RIGHT -> canShift(gameBoard.playingArea)
-            NONE -> false
         }
     }
 
@@ -27,12 +25,12 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
             DOWN -> shiftDownMirrorImageAndRevertBack()
             LEFT -> shiftLeft()
             RIGHT -> shiftRightMirrorImageAndRevertBack()
-            NONE -> {}
         }
     }
 
     private fun shiftLeft() {
-        gameBoard.playingArea = shift(gameBoard.playingArea)
+        val playingArea = shift(gameBoard.playingArea)
+        gameBoard.playingArea = playingArea.clone()
     }
 
     //reversing twice because I need to return the original board

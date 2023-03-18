@@ -10,25 +10,21 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven {
-        url = uri("https://repo1.maven.org/maven2/")
-    }
-
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
+    maven ("https://dl.bintray.com/qos-ch/maven")
+
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.slf4j.api)
-    testImplementation(libs.slf4j.simple) {
+    implementation(libs.slf4j.simple) {
         exclude(group = "org.slf4j", module = "slf4j-api")
     }
+    implementation(libs.log4j.core)
+
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockito)
     testImplementation(libs.kotlin.test.junit5) {

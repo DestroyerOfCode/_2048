@@ -218,6 +218,19 @@ open class MovementServiceTestUtils {
                         intArrayOf(16, 4, 8, 4),
                         intArrayOf(4, 2, 4, 8)
                     ), LEFT
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(8, 0, 0, 0),
+                        intArrayOf(4, 8, 4, 2),
+                        intArrayOf(32, 16, 4, 2)
+                    ), arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(8, 0, 0, 0),
+                        intArrayOf(4, 8, 4, 2),
+                        intArrayOf(32, 16, 4, 2)
+                    ), LEFT
                 )
             )
 
@@ -274,6 +287,19 @@ open class MovementServiceTestUtils {
                         intArrayOf(0, 0, 4, 2)
                     ), RIGHT
                 ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(8, 0, 0, 0),
+                        intArrayOf(4, 8, 4, 2),
+                        intArrayOf(32, 16, 4, 2)
+                    ), arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 8),
+                        intArrayOf(4, 8, 4, 2),
+                        intArrayOf(32, 16, 4, 2)
+                    ), RIGHT
+                ),
             )
         }
     }
@@ -307,7 +333,17 @@ open class MovementServiceTestUtils {
                         intArrayOf(0, 0, 0, 0)
                     ),
                     true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(8, 0, 0, 0),
+                        intArrayOf(4, 8, 4, 2),
+                        intArrayOf(32, 16, 4, 2)
+                    ),
+                    true
                 )
+
 
             )
 
@@ -543,7 +579,7 @@ open class MovementServiceTestUtils {
                     RIGHT,
                     true
                 ),
-            Arguments.of(
+                Arguments.of(
                     arrayOf(
                         intArrayOf(0, 2, 2, 8),
                         intArrayOf(0, 2, 4, 8),
@@ -553,7 +589,7 @@ open class MovementServiceTestUtils {
                     RIGHT,
                     true
                 ),
-            Arguments.of(
+                Arguments.of(
                     arrayOf(
                         intArrayOf(0, 2, 0, 2),
                         intArrayOf(0, 2, 4, 2),
