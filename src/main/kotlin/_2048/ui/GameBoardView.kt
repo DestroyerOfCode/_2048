@@ -1,4 +1,4 @@
-package _2048
+package _2048.ui
 
 import _2048.gameboard.Direction
 import _2048.gameboard.GameBoard

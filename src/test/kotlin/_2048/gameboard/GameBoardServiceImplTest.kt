@@ -8,11 +8,7 @@ import _2048.player.PlayerServiceImpl
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.doCallRealMethod
-import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.never
-import org.mockito.BDDMockito.times
-import org.mockito.BDDMockito.verify
+import org.mockito.BDDMockito.*
 import org.mockito.Mockito
 import org.mockito.Mockito.doReturn
 import java.io.ByteArrayInputStream
