@@ -2,7 +2,9 @@ package _2048.gameboard
 
 import _2048.movement.IllegalMoveException
 import _2048.movement.MovementService
+import _2048.movement.MovementServiceImpl
 import _2048.player.PlayerService
+import _2048.player.PlayerServiceImpl
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import org.slf4j.Logger
@@ -10,8 +12,8 @@ import org.slf4j.LoggerFactory
 
 class GameBoardServiceImpl(
     private val gameBoard: GameBoard = GameBoard(movementChannel = Channel()),
-    private val playerService: PlayerService,
-    private val movementService: MovementService,
+    private val playerService: PlayerService = PlayerServiceImpl(gameBoard),
+    private val movementService: MovementService = MovementServiceImpl(gameBoard),
 ) : GameBoardService {
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardServiceImpl::class.java)
@@ -42,7 +44,7 @@ class GameBoardServiceImpl(
     }
 
 
-    override fun playRound(direction: Direction) {
+    private fun playRound(direction: Direction) {
         movementService.shift(direction)
         playerService.addNewTile()
     }
