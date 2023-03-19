@@ -1,4 +1,5 @@
 package _2048.movement
+
 import _2048.gameboard.Direction
 import _2048.gameboard.Direction.*
 import _2048.gameboard.GameBoard
@@ -13,9 +14,9 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
     override fun isMoveLegal(direction: Direction): Boolean {
         return when (direction) {
             UP -> canShift(transposeFromRowToColumn(gameBoard.playingArea))
-            DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray()))
-            LEFT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
-            RIGHT -> canShift(gameBoard.playingArea)
+            DOWN -> canShift(transposeFromRowToColumn(gameBoard.playingArea).map { it.reversedArray() }.toTypedArray())
+            LEFT -> canShift(gameBoard.playingArea)
+            RIGHT -> canShift(gameBoard.playingArea.map { it.reversedArray() }.toTypedArray())
         }
     }
 
@@ -51,38 +52,16 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
         gameBoard.playingArea = transposeFromRowToColumn(shiftedPlayingArea).reversedArray()
     }
 
-    private fun canCompactTiles(i: Int, row: IntArray): Boolean {
-        for (j in i - 1 downTo 0) {
-            if (row[j] != 0) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun canMergeTiles(rowIndex: Int, row: IntArray): Boolean {
-        for (j in rowIndex - 1 downTo 0) {
-            if (row[rowIndex] == row[j]) {
-                return true
-            }
-            if (row[j] != 0) {
-                break
-            }
-        }
-        return false
-    }
-
     private fun canShift(row: IntArray): Boolean {
-        for (i in row.lastIndex downTo 1) {
-            if (isRowEmpty(row, i)) {
-                if (canCompactTiles(i, row)) {
-                    return true
-                }
-            } else {
-                if (canMergeTiles(i, row)) {
-                    return true
-                }
+
+        for (index in row.size - 1 downTo 1) {
+            if (isTileEmpty(row[index])) {
+                continue
             }
+
+            val adjacentVal = row[index - 1]
+            if (0 == adjacentVal || adjacentVal == row[index])
+                return true
         }
         return false
     }
@@ -151,6 +130,6 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
     }
 
     private fun isPlayingAreaNotFull(): Boolean = gameBoard.playingArea.any { row -> row.contains(0) }
-    private fun isRowEmpty(row: IntArray, i: Int) = 0 == row[i]
+    private fun isTileEmpty(number: Int) = 0 == number
     private fun areTilesNonZeroAndDifferent(tile1: Int, tile2: Int): Boolean = 0 != tile1 && tile1 != tile2
 }

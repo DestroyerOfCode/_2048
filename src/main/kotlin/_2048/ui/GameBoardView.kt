@@ -72,7 +72,7 @@ class GameBoardView(private val gameBoard: GameBoard) {
             Key.DirectionUp -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.UP)
             Key.DirectionDown -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.DOWN)
             Key.DirectionLeft -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.LEFT)
-            Key.DirectionRight -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.UP)
+            Key.DirectionRight -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.RIGHT)
             else -> false
         }
     }

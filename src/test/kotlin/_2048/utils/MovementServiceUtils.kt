@@ -342,6 +342,15 @@ open class MovementServiceTestUtils {
                         intArrayOf(32, 16, 4, 2)
                     ),
                     true
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(4, 2, 4, 8),
+                        intArrayOf(128, 4, 16, 2)
+                    ),
+                    true
                 )
 
 
@@ -389,7 +398,17 @@ open class MovementServiceTestUtils {
                     ),
                     UP,
                     true
-                )
+                ),
+                Arguments.of(
+                    arrayOf(
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(0, 0, 0, 0),
+                        intArrayOf(4, 2, 2, 8),
+                        intArrayOf(128, 4, 16, 2)
+                    ),
+                    UP,
+                    true
+                ),
             )
 
             private fun createIsMoveLegalDownArguments(): Stream<Arguments> = Stream.of(
