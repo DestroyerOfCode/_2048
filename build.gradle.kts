@@ -34,6 +34,12 @@ dependencies {
     implementation(compose.desktop.currentOs)
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"
