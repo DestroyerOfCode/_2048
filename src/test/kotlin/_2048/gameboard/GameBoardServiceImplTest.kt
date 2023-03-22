@@ -76,7 +76,7 @@ class GameBoardServiceImplTest {
 
         //then
         verify(playerService, times(1)).getDirectionOfShift("w")
-        verify(movementService, times(1)).shift(UP)
+        verify(movementService, times(1)).move(UP)
         verify(playerService, times(1)).addNewTile()
     }
 
@@ -135,7 +135,7 @@ class GameBoardServiceImplTest {
 
     private fun isShiftInAnyDirectionEverCalled() {
         Direction.values().forEach { direction: Direction ->
-            verify(movementService, never()).shift(direction)
+            verify(movementService, never()).move(direction)
         }
     }
 }

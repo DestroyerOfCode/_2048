@@ -45,7 +45,7 @@ class GameBoardServiceImpl(
 
 
     private fun playRound(direction: Direction) {
-        movementService.shift(direction)
+        movementService.move(direction)
         playerService.addNewTile()
     }
 

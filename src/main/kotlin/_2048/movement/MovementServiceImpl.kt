@@ -20,7 +20,7 @@ class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementC
         }
     }
 
-    override fun shift(direction: Direction) {
+    override fun move(direction: Direction) {
         when (direction) {
             UP -> shiftUpMirrorImageAndRevertBack()
             DOWN -> shiftDownMirrorImageAndRevertBack()

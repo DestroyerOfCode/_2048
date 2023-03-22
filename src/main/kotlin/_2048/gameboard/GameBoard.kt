@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import kotlin.random.Random
 
 class GameBoard(
-    var playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
+    var  playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
     var score: Int = 0,
     val movementChannel: Channel<Direction> = Channel(
         capacity = Channel.UNLIMITED,

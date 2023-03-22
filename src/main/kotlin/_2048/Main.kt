@@ -3,7 +3,7 @@ package _2048
 import _2048.gameboard.GameBoard
 import _2048.gameboard.GameBoardService
 import _2048.gameboard.GameBoardServiceImpl
-import _2048.ui.GameBoardView
+import _2048.ui.component.GameBoardViewModel
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -20,7 +20,7 @@ fun main() = singleWindowApplication(title = "2048", icon = ColorPainter(Color.C
         gameBoardService.playGame()
     }
 
-    val gameBoardView = GameBoardView(gameBoard)
+    val gameBoardView = GameBoardViewModel(gameBoard)
     MaterialTheme {
         gameBoardView.playingBoard()
     }

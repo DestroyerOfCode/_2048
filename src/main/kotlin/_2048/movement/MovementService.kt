@@ -20,6 +20,6 @@ interface MovementService {
      * Shifts the single instance of the board the class has
      * @param direction where player is attempting to shift the board
      */
-    fun shift(direction: Direction)
+    fun move(direction: Direction)
 
 }

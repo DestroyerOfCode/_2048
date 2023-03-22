@@ -46,7 +46,7 @@ class MovementServiceImplTest {
         movementService = MovementServiceImpl(gameBoard)
 
         // when
-        movementService.shift(direction)
+        movementService.move(direction)
 
         //then
         assertTwoDimensionalArrays(outputPlayingArea, gameBoard.playingArea)

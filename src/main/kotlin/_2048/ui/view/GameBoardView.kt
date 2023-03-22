@@ -1,27 +1,31 @@
-package _2048.ui
+package _2048.ui.view
 
 import _2048.gameboard.Direction
-import _2048.gameboard.GameBoard
+import _2048.ui.component.GameBoardViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.Dp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class GameBoardView(private val gameBoard: GameBoard) {
+class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardView::class.java)
+        private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardViewModel::class.java)
     }
 
     @Composable
@@ -31,16 +35,15 @@ class GameBoardView(private val gameBoard: GameBoard) {
         horizontalArrangement = Arrangement.Center
     ) {
 
-        val gameBoardBox: MutableState<Array<IntArray>> = mutableStateOf(gameBoard.playingArea)
         val coroutineScope = rememberCoroutineScope()
 
         Column(
-            modifier = Modifier.focusable().onKeyEvent(onKeyPressed(gameBoardBox, coroutineScope))
+            modifier = Modifier.focusable().onKeyEvent(onKeyPressed(coroutineScope))
         ) {
-            for (row in 0 until gameBoardBox.value.size) {
+            for (row in 0 until gameBoardViewModel.gameBoardBox.value.size) {
                 Row {
-                    for (column in 0 until gameBoardBox.value[0].size) {
-                        createNumberBox(gameBoardBox.value[row][column])
+                    for (column in 0 until gameBoardViewModel.gameBoardBox.value[0].size) {
+                        createNumberBox(gameBoardViewModel.gameBoardBox.value[row][column])
                     }
                 }
             }
@@ -65,14 +68,12 @@ class GameBoardView(private val gameBoard: GameBoard) {
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
-    fun onKeyPressed(
-        gameBoardBox: MutableState<Array<IntArray>>, coroutineScope: CoroutineScope
-    ): (KeyEvent) -> Boolean = { input: KeyEvent ->
+    fun onKeyPressed(coroutineScope: CoroutineScope): (KeyEvent) -> Boolean = { input: KeyEvent ->
         when (input.key) {
-            Key.DirectionUp -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.UP)
-            Key.DirectionDown -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.DOWN)
-            Key.DirectionLeft -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.LEFT)
-            Key.DirectionRight -> handleKeyPressed(input.type, coroutineScope, gameBoardBox, Direction.RIGHT)
+            Key.DirectionUp -> handleKeyPressed(input.type, coroutineScope, Direction.UP)
+            Key.DirectionDown -> handleKeyPressed(input.type, coroutineScope, Direction.DOWN)
+            Key.DirectionLeft -> handleKeyPressed(input.type, coroutineScope, Direction.LEFT)
+            Key.DirectionRight -> handleKeyPressed(input.type, coroutineScope, Direction.RIGHT)
             else -> false
         }
     }
@@ -80,20 +81,19 @@ class GameBoardView(private val gameBoard: GameBoard) {
     private fun handleKeyPressed(
         type: KeyEventType,
         coroutineScope: CoroutineScope,
-        gameBoardBox: MutableState<Array<IntArray>>,
         direction: Direction
     ) = if (type != KeyEventType.KeyUp) {
         false
     } else {
-        coroutineScope.launch { shiftAndRender(gameBoardBox, direction) }
+        coroutineScope.launch { shiftAndRender(gameBoardViewModel.gameBoardBox, direction) }
         true
     }
 
     private suspend fun shiftAndRender(
         gameBoardBox: MutableState<Array<IntArray>>, direction: Direction
     ) = try {
-        gameBoard.movementChannel.send(direction)
-        gameBoardBox.value = gameBoard.playingAreaChannel.receive()
+        gameBoardViewModel.gameBoard.movementChannel.send(direction)
+        gameBoardBox.value = gameBoardViewModel.gameBoard.playingAreaChannel.receive()
     } catch (ex: CancellationException) {
         LOGGER.error("Exception thrown when receiving channel ${ex.message}")
     }
