@@ -26,6 +26,8 @@ class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
 
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(GameBoardViewModel::class.java)
+        private const val TILE_WIDTH: Float = 100f
+        private const val TILE_HEIGHT: Float = 100f
     }
 
     @Composable
@@ -53,7 +55,7 @@ class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
     @Composable
     private fun createNumberBox(boxNumber: Int) = Box(
         modifier = Modifier.size(
-            Dp(100F), Dp(100F)
+            Dp(TILE_WIDTH), Dp(TILE_HEIGHT)
         ).border(Dp(2f), Color.Black).background(Color.White)
     ) {
         tile(Color.White, boxNumber)
@@ -62,7 +64,7 @@ class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
 
     @Composable
     private fun tile(color: Color, value: Int) = Box(
-        modifier = Modifier.size(Dp(100F), Dp(100F)).border(Dp(2f), Color.Black).background(color)
+        modifier = Modifier.size(Dp(TILE_WIDTH), Dp(TILE_HEIGHT)).border(Dp(2f), Color.Black).background(color)
     ) {
         Text(value.toString(), modifier = Modifier.align(Alignment.Center))
     }
