@@ -43,30 +43,34 @@ class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
             modifier = Modifier.focusable().onKeyEvent(onKeyPressed(coroutineScope))
         ) {
             for (row in 0 until gameBoardViewModel.gameBoardBox.value.size) {
-                Row {
-                    for (column in 0 until gameBoardViewModel.gameBoardBox.value[0].size) {
-                        createNumberBox(gameBoardViewModel.gameBoardBox.value[row][column])
+                Column {
+                    Row {
+                        createTiles(row)
                     }
+                    Spacer(modifier = Modifier.height(Dp(1f)))
                 }
             }
         }
     }
 
     @Composable
-    private fun createNumberBox(boxNumber: Int) = Box(
-        modifier = Modifier.size(
-            Dp(TILE_WIDTH), Dp(TILE_HEIGHT)
-        ).border(Dp(2f), Color.Black).background(Color.White)
-    ) {
-        tile(Color.White, boxNumber)
+    private fun createTiles(row: Int) {
+        for (column in 0 until gameBoardViewModel.gameBoardBox.value[0].size) {
+            val tileValue = gameBoardViewModel.gameBoardBox.value[row][column]
+            tile(
+                color = gameBoardViewModel.tileColors[tileValue]!!,
+                tileValue = tileValue.toString()
+            )
+            Spacer(modifier = Modifier.width(Dp(1f)))
+
+        }
     }
 
-
     @Composable
-    private fun tile(color: Color, value: Int) = Box(
+    private fun tile(color: Color, tileValue: String) = Box(
         modifier = Modifier.size(Dp(TILE_WIDTH), Dp(TILE_HEIGHT)).border(Dp(2f), Color.Black).background(color)
     ) {
-        Text(value.toString(), modifier = Modifier.align(Alignment.Center))
+        Text(tileValue, modifier = Modifier.align(Alignment.Center))
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
