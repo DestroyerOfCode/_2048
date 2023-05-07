@@ -1,6 +1,7 @@
 package _2048.gameboard
 
 import _2048.movement.IllegalMoveException
+import _2048.movement.MovementChannelSingleton
 import _2048.movement.MovementService
 import _2048.movement.MovementServiceImpl
 import _2048.player.PlayerService
@@ -11,7 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class GameBoardServiceImpl(
-    private val gameBoard: GameBoard = GameBoard(movementChannel = Channel()),
+    private val gameBoard: GameBoard = GameBoard(),
     private val playerService: PlayerService = PlayerServiceImpl(gameBoard),
     private val movementService: MovementService = MovementServiceImpl(gameBoard),
 ) : GameBoardService {
@@ -22,17 +23,17 @@ class GameBoardServiceImpl(
     override suspend fun playGame() {
         gameLoop@ while (movementService.canMakeMove()) {
             try {
-                val direction: Direction = gameBoard.movementChannel.receive()
+                val direction: Direction = MovementChannelSingleton.getInstance().receiveDirection()
 
                 //when making a move that would change no position of tiles
                 if (!movementService.isMoveLegal(direction)) {
-                    gameBoard.playingAreaChannel.send(gameBoard.playingArea)
+                    GameBoardChannelSingleton.getInstance().sendPlayingBoard(gameBoard.playingArea)
                     continue@gameLoop
                 }
                 //both players movement
                 playRound(direction)
 
-                gameBoard.playingAreaChannel.send(gameBoard.playingArea)
+                GameBoardChannelSingleton.getInstance().sendPlayingBoard(gameBoard.playingArea)
 
             } catch (ex: IllegalMoveException) {
                 LOGGER.error(ex.message)
@@ -42,7 +43,6 @@ class GameBoardServiceImpl(
 
         }
     }
-
 
     private fun playRound(direction: Direction) {
         movementService.move(direction)

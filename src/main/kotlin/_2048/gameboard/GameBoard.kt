@@ -6,13 +6,10 @@ import org.slf4j.LoggerFactory
 import kotlin.random.Random
 
 class GameBoard(
-    var  playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
-    var score: Int = 0,
-    val movementChannel: Channel<Direction> = Channel(
-        capacity = Channel.UNLIMITED,
-        onUndeliveredElement = { LOGGER.error("Undelivered message $this") }),
-    val playingAreaChannel: Channel<Array<IntArray>> = Channel(capacity = Channel.UNLIMITED)
-) {
+        var playingArea: Array<IntArray> = Array(BOX_HEIGHT) { IntArray(BOX_WIDTH) },
+        var score: Int = 0,
+
+        ) {
 
     companion object {
         const val BOX_HEIGHT = 4

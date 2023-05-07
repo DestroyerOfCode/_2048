@@ -1,6 +1,8 @@
 package _2048.ui.view
 
 import _2048.gameboard.Direction
+import _2048.gameboard.GameBoardChannelSingleton
+import _2048.movement.MovementChannelSingleton
 import _2048.ui.component.GameBoardViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -98,8 +100,8 @@ class GameBoardView(private val gameBoardViewModel: GameBoardViewModel) {
     private suspend fun shiftAndRender(
         gameBoardBox: MutableState<Array<IntArray>>, direction: Direction
     ) = try {
-        gameBoardViewModel.gameBoard.movementChannel.send(direction)
-        gameBoardBox.value = gameBoardViewModel.gameBoard.playingAreaChannel.receive()
+        MovementChannelSingleton.getInstance().sendDirection(direction)
+        gameBoardBox.value = GameBoardChannelSingleton.getInstance().receivePlayingBoard()
     } catch (ex: CancellationException) {
         LOGGER.error("Exception thrown when receiving channel ${ex.message}")
     }

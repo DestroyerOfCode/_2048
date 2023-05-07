@@ -5,7 +5,7 @@ import _2048.gameboard.Direction.*
 import _2048.gameboard.GameBoard
 import kotlinx.coroutines.channels.Channel
 
-class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard(movementChannel = Channel())) : MovementService {
+class MovementServiceImpl(private val gameBoard: GameBoard = GameBoard()) : MovementService {
     override fun canMakeMove(): Boolean {
         return isPlayingAreaNotFull() or Direction.values()
             .any { direction -> isMoveLegal(direction) }
