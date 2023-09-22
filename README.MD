@@ -1,6 +1,6 @@
 To start the game, you must have JDK 17 installed.
 <br>
-./gradlew clean build
+./gradlew clean build run
 <br>
 To move, use arrow keys.
 <br>

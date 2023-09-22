@@ -42,13 +42,13 @@ java {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "_2048.MainKt"
     }
 }
 
 group = "main"
 version = "1.0-SNAPSHOT"
-description = "consoleApp"
+description = "this is 2048 game"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
